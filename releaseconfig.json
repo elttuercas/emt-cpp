@@ -50,11 +50,11 @@
             //is_fast: false by default, if it is true, the client is faster but user can't call
             //any synchronous interface of it.
             "is_fast": false,
-            //client_encoding: The character set used by the client. it is empty string by default which 
+            //client_encoding: The character set used by the client. it is empty string by default which
             //means use the default character set.
             //"client_encoding": "",
-            //connection_number: 1 by default, if the 'is_fast' is true, the number is the number of  
-            //connections per IO thread, otherwise it is the total number of all connections.  
+            //connection_number: 1 by default, if the 'is_fast' is true, the number is the number of
+            //connections per IO thread, otherwise it is the total number of all connections.
             "connection_number": 1
         }
     ],*/
@@ -129,7 +129,7 @@
             {
                 "uri_prefix": "/css",
                 "default_content_type": "text/css",
-                "alias": "/home/eltu/dev/emt/emt-cpp/postcss",
+                "alias": "/emt/postcss",
                 "is_case_sensitive": true,
                 "allow_all": false,
                 "is_recursive": true,
@@ -138,7 +138,7 @@
             {
                 "uri_prefix": "/js",
                 "default_content_type": "text/javascript",
-                "alias": "/home/eltu/dev/emt/emt-cpp/js",
+                "alias": "/emt/js",
                 "is_case_sensitive": true,
                 "allow_all": false,
                 "is_recursive": true,
@@ -158,8 +158,8 @@
         "dynamic_views_path": [
             "./views"
         ],
-        //dynamic_views_output_path: Default by an empty string which means the output path of source 
-        //files is the path where the csp files locate. If the path isn't prefixed with /, it is relative 
+        //dynamic_views_output_path: Default by an empty string which means the output path of source
+        //files is the path where the csp files locate. If the path isn't prefixed with /, it is relative
         //path of the current working directory.
         "dynamic_views_output_path": "",
         //enable_unicode_escaping_in_json: true by default, enable unicode escaping in json.
@@ -182,7 +182,7 @@
         "run_as_daemon": false,
         //relaunch_on_error: False by default, if true, the program will be restart by the parent after exiting;
         "relaunch_on_error": false,
-        //use_sendfile: True by default, if true, the program 
+        //use_sendfile: True by default, if true, the program
         //uses sendfile() system-call to send static files to clients;
         "use_sendfile": true,
         //use_gzip: True by default, use gzip to compress the response body's content;
@@ -194,31 +194,31 @@
         "static_files_cache_time": 5,
         //simple_controllers_map: Used to configure mapping from path to simple controller
         "simple_controllers_map": [],
-        //idle_connection_timeout: Defaults to 60 seconds, the lifetime 
+        //idle_connection_timeout: Defaults to 60 seconds, the lifetime
         //of the connection without read or write
         "idle_connection_timeout": 60,
         //server_header_field: Set the 'Server' header field in each response sent by drogon,
         //empty string by default with which the 'Server' header field is set to "Server: drogon/version string\r\n"
         "server_header_field": "",
-        //enable_server_header: Set true to force drogon to add a 'Server' header to each HTTP response. The default 
+        //enable_server_header: Set true to force drogon to add a 'Server' header to each HTTP response. The default
         //value is true.
         "enable_server_header": true,
-        //enable_date_header: Set true to force drogon to add a 'Date' header to each HTTP response. The default 
+        //enable_date_header: Set true to force drogon to add a 'Date' header to each HTTP response. The default
         //value is true.
         "enable_date_header": true,
-        //keepalive_requests: Set the maximum number of requests that can be served through one keep-alive connection. 
+        //keepalive_requests: Set the maximum number of requests that can be served through one keep-alive connection.
         //After the maximum number of requests are made, the connection is closed.
         //The default value of 0 means no limit.
         "keepalive_requests": 0,
-        //pipelining_requests: Set the maximum number of unhandled requests that can be cached in pipelining buffer. 
+        //pipelining_requests: Set the maximum number of unhandled requests that can be cached in pipelining buffer.
         //After the maximum number of requests are made, the connection is closed.
         //The default value of 0 means no limit.
         "pipelining_requests": 0,
-        //gzip_static: If it is set to true, when the client requests a static file, drogon first finds the compressed 
+        //gzip_static: If it is set to true, when the client requests a static file, drogon first finds the compressed
         //file with the extension ".gz" in the same path and send the compressed file to the client.
         //The default value of gzip_static is true.
         "gzip_static": true,
-        //br_static: If it is set to true, when the client requests a static file, drogon first finds the compressed 
+        //br_static: If it is set to true, when the client requests a static file, drogon first finds the compressed
         //file with the extension ".br" in the same path and send the compressed file to the client.
         //The default value of br_static is true.
         "br_static": true,
@@ -235,6 +235,6 @@
     },
     //plugins: Define all plugins running in the application
     "plugins": [],
-    //custom_config: custom configuration for users. This object can be get by the app().getCustomConfig() method. 
+    //custom_config: custom configuration for users. This object can be get by the app().getCustomConfig() method.
     "custom_config": {}
 }

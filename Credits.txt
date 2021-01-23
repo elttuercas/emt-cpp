@@ -1,7 +1,0 @@
-Carlos Amores, 2020
-
-I am grateful to the following projects, whose work has been used to provide functionality and style to this project.
-
-an-tao/drogon
-    Repository: https://github.com/an-tao/drogon/
-    License: https://github.com/an-tao/drogon/blob/master/LICENSE
