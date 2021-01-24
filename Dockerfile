@@ -1,11 +1,6 @@
-FROM drogonframework/drogon
-
-# Install npm to perform TS compilation and CSS minimisation and concatenation
-RUN apt update && apt install -y npm node-typescript
-RUN npm install -g n && n stable
+FROM docker.io/eltuercas/drogon
 
 # Create application directory
-RUN mkdir /emt
 WORKDIR /emt
 
 # Copy npm package files
@@ -29,9 +24,6 @@ COPY ./tailwind.config.js /emt/tailwind.config.js
 # Mix asset file
 COPY ./webpack.mix.js /emt/webpack.mix.js
 
-# Install npm dependencies and create webpack production files
-RUN npm run prod
-
 # Copy CMakeLists
 COPY ./CMakeLists.txt /emt/CMakeLists.txt
 
@@ -41,19 +33,19 @@ COPY ./controllers /emt/controllers
 COPY ./plugins /emt/plugins
 COPY ./filters /emt/filters
 
-# Copy LSP files
+# Copy CSP files
 COPY ./views /emt/views
 
 # Copy database model spec file and C++ model source files
 COPY ./models /emt/models
 
-# Create application build directory
-RUN mkdir /emt/build
+# Install create webpack production files
+RUN npm run prod
 
 # Change to build directory and compile the application
 WORKDIR /emt/build
-RUN cmake ..
+RUN cmake -DCMAKE_BUILD_TYPE=Release ..
 RUN make
 
 # Run web application
-CMD ["emt-cpp"]
+CMD ["/emt/build/emt-cpp"]
