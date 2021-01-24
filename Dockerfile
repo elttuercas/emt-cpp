@@ -14,8 +14,8 @@ COPY ./node_modules /emt/node_modules
 # Copy release configuration file
 COPY ./releaseconfig.json /emt/config.json
 
-# Source CSS files
-COPY ./css /emt/css
+# Source SCSS files
+COPY ./scss /emt/scss
 
 # Source TS files and configuration
 COPY ./ts /emt/ts
