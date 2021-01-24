@@ -129,7 +129,7 @@
             {
                 "uri_prefix": "/css",
                 "default_content_type": "text/css",
-                "alias": "/home/eltu/dev/emt/emt-cpp/postcss",
+                "alias": "/home/eltu/dev/emt/emt-cpp/css",
                 "is_case_sensitive": true,
                 "allow_all": false,
                 "is_recursive": true,

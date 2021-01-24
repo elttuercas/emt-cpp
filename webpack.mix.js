@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const tailwindcss = require('tailwindcss');
 
 // Add TypeScript support.
 mix.webpackConfig(
@@ -25,4 +26,17 @@ mix.webpackConfig(
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.postCss('css/global.css', 'postcss', [require('tailwindcss')]);
+
+mix
+    .sass(
+        './scss/global.scss',
+        './css'
+    )
+    .options(
+        {
+            processCssUrls: false,
+            postCss: [
+                tailwindcss('./tailwind.config.js')
+            ]
+        }
+    );

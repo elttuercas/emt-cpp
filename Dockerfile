@@ -3,6 +3,9 @@ FROM docker.io/eltuercas/drogon
 # Create application directory
 WORKDIR /emt
 
+# Copy licence
+COPY ./LICENSE /emt/LICENSE
+
 # Copy npm package files
 COPY ./package.json /emt/package.json
 COPY ./package-lock.json /emt/package-lock.json

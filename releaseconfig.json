@@ -129,7 +129,7 @@
             {
                 "uri_prefix": "/css",
                 "default_content_type": "text/css",
-                "alias": "/emt/postcss",
+                "alias": "/emt/css",
                 "is_case_sensitive": true,
                 "allow_all": false,
                 "is_recursive": true,

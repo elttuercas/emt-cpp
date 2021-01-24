@@ -39,6 +39,6 @@ package-lock.json
 mix-manifest.json
 fa
 js
-postcss
+css
 !webpack.mix.js
 !tailwind.config.js
