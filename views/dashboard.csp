@@ -1,0 +1,36 @@
+<%c++ std::vector<std::map<std::string, std::string>> rgEvents = @@.get<std::vector<std::map<std::string, std::string>>>("events"); %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/global.css">
+    <title>EMT - Dashboard</title>
+</head>
+<body>
+<!-- TODO: Nav menu, pagination -->
+<!-- Display a table containing all recent events. Pagination handled by controller. -->
+<table>
+    <thead>
+    <tr>
+        <th>Host</th>
+        <th>Event Name</th>
+        <th>Platform</th>
+        <th>REP Rate</th>
+        <th>Start Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%c++ for (std::map<std::string, std::string> &event : rgEvents) {%>
+    <tr>
+        <td>{%event["host"]%}</td>
+        <td>{%event["name"]%}</td>
+        <td>{%event["platform"]%}</td>
+        <td>{%event["rate"]%}</td>
+        <td>{%event["startTime"]%}</td>
+    </tr>
+    <%c++ } %>
+    </tbody>
+</table>
+</body>
+</html>
