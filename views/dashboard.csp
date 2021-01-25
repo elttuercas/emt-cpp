@@ -8,7 +8,9 @@
     <title>EMT - Dashboard</title>
 </head>
 <body>
-<!-- TODO: Nav menu, pagination -->
+<!-- Nav menu -->
+<%view ./views/navheader.csp %>
+<!-- TODO: Table pagination -->
 <!-- Display a table containing all recent events. Pagination handled by controller. -->
 <table>
     <thead>

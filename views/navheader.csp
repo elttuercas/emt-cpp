@@ -1,0 +1,14 @@
+<nav class="std_nav">
+    <div class="std_nav_logo_container">
+        <span class="std_nav_logo_text">Event Management Tool</span>
+    </div>
+    <div class="std_nav_menu_items_container">
+        <div class="std_nav_menu_items">
+            <a href="/dashboard" class="std_nav_menu_item">Dashboard</a>
+            <a href="/log/create" class="std_nav_menu_item">Create Event Log</a>
+        </div>
+        <div class="std_nav_menu_logout_container">
+            <a class="std_nav_menu_logout" href="/logout">Logout</a>
+        </div>
+    </div>
+</nav>
