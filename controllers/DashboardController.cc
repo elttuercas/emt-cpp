@@ -1,6 +1,6 @@
-#include "Dashboard.h"
+#include "DashboardController.h"
 
-void Dashboard::get(const HttpRequestPtr &request, std::function<void(const HttpResponsePtr &)> &&callback)
+void DashboardController::get(const HttpRequestPtr &request, std::function<void(const HttpResponsePtr &)> &&callback)
 {
     // Sample vector of events to be displayed.
     std::vector<std::map<std::string, std::string>> rgEvents = {
@@ -44,8 +44,8 @@ void Dashboard::get(const HttpRequestPtr &request, std::function<void(const Http
     callback(pResponse);
 }
 
-void Dashboard::getPaginated(const HttpRequestPtr &request, std::function<void(const HttpResponsePtr &)> &&callback,
-                             int page)
+void DashboardController::getPaginated(const HttpRequestPtr &request, std::function<void(const HttpResponsePtr &)> &&callback,
+                                       int page)
 {
     // Sample vector of events to be displayed.
     std::vector<std::map<std::string, std::string>> rgEvents = {
