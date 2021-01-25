@@ -6,8 +6,8 @@
 using namespace drogon;
 
 /**
- * DashboardController controller. Displays recently hosted events by default. Handles pagination of the recently hosted events table
- * when necessary.
+ * Class DashboardController. Displays recently hosted events by default. Handles pagination of the
+ * recently hosted events table when necessary.
  *
  * @author Carlos Amores
  */
