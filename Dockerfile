@@ -6,10 +6,10 @@ WORKDIR /emt
 # Copy licence
 COPY ./LICENSE /emt/LICENSE
 
-# Copy npm package files
+# Copy npm package description and install npm dependencies
 COPY ./package.json /emt/package.json
 COPY ./package-lock.json /emt/package-lock.json
-COPY ./node_modules /emt/node_modules
+RUN npm install
 
 # Copy release configuration file
 COPY ./releaseconfig.json /emt/config.json
