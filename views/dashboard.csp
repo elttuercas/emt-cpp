@@ -1,5 +1,10 @@
 <%c++ std::vector<std::map<std::string, std::string>> rgEvents = @@.get<std::vector<std::map<std::string, std::string>>>("events"); %>
 <!DOCTYPE html>
+<!--
+Template data:
+events - std::vector<std::map<std::string, std::string>>
+loggedIn - bool
+-->
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
