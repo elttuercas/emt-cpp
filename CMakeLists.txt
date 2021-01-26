@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
-project(emt-cpp CXX)
+project(emt-cpp LANGUAGES CXX VERSION 0.1.0)
+message("${PROJECT_NAME} VERSION ${CMAKE_PROJECT_VERSION}")
 
 include(CheckIncludeFileCXX)
 
