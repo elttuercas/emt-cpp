@@ -17,48 +17,77 @@ loggedIn - bool
 <%view ./views/navheader.csp %>
 <!-- TODO: Table pagination -->
 <!-- Display a table containing all recent events. Pagination handled by controller. -->
-<table class="std_table">
-    <thead>
-    <tr>
-        <th>Host</th>
-        <th>Event Name</th>
-        <th>Platform</th>
-        <th>REP Rate</th>
-        <th>Start Time</th>
-        <th>Link</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%c++ for (std::map<std::string, std::string> &event : rgEvents) {%>
-    <tr class="std_table_row">
-        <td>
-            <span>Host</span>
-            {%event["host"]%}
-        </td>
-        <td>
-            <span>Event Name</span>
-            {%event["name"]%}
-        </td>
-        <td>
-            <span>Platform</span>
-            {%event["platform"]%}
-        </td>
-        <td>
-            <span>REP Rate</span>
-            {%event["rate"]%}
-        </td>
-        <td>
-            <span>Start Time</span>
-            {%event["startTime"]%}
-        </td>
-        <td>
-            <span>Link</span>
-            <a href="#">Linklet</a>
-            <a href="#">Linklet 2</a>
-        </td>
-    </tr>
-    <%c++ } %>
-    </tbody>
-</table>
+<div class="std_container">
+    <div class="std_table_container">
+        <div class="std_table_header">
+            <h2>Events</h2>
+        </div>
+        <div class="std_table_controls_container">
+            <div class="std_table_controls">
+                <div class="std_table_search_box">
+                    <span>
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z"></path>
+                        </svg>
+                    </span>
+                    <label for="event_table_search_box"></label>
+                    <input id="event_table_search_box" type="text" placeholder="Search" class="std_table_search_box_input_standalone std_table_search_box_input">
+                </div>
+            </div>
+        </div>
+        <div class="std_table_outer_wrapper">
+            <div class="std_table_inner_wrapper">
+                <table class="std_table">
+                    <thead>
+                    <tr>
+                        <th>Host</th>
+                        <th>Event Name</th>
+                        <th>Platform</th>
+                        <th>REP Rate</th>
+                        <th>Start Time</th>
+                        <th>Link</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <%c++ for (std::map<std::string, std::string> &event : rgEvents) {%>
+                    <tr class="std_table_row">
+                        <td>
+                            <p>{%event["host"]%}</p>
+                        </td>
+                        <td>
+                            <p>{%event["name"]%}</p>
+                        </td>
+                        <td>
+                            <p>{%event["platform"]%}</p>
+                        </td>
+                        <td>
+                            <p>{%event["rate"]%}</p>
+                        </td>
+                        <td>
+                            <p>{%event["startTime"]%}</p>
+                        </td>
+                        <td>
+                            <a href="#">Linklet</a>
+                            <a href="#">Linklet 2</a>
+                        </td>
+                    </tr>
+                    <%c++ } %>
+                    </tbody>
+                </table>
+                <div class="std_table_pagination">
+                    <span>Showing 3 out of 3 events</span>
+                    <div class="std_table_pagination_buttons">
+                        <button class="std_table_pagination_button_prev">
+                            Prev
+                        </button>
+                        <button class="std_table_pagination_button_next">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
