@@ -51,13 +51,25 @@ mix
                 tailwindcss('./tailwind.config.js')
             ]
         }
+    ).sass(
+        './scss/std_table.scss',
+        './css'
+    )
+    .options(
+        {
+            processCssUrls: false,
+            postCss: [
+                tailwindcss('./tailwind.config.js')
+            ]
+        }
     );
 
 // Concatenate all CSS assets together.
 mix.styles(
     [
         './css/global.css',
-        './css/std_nav.css'
+        './css/std_nav.css',
+        './css/std_table.css'
     ],
     './css/global.css'
 );

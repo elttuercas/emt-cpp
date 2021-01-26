@@ -17,7 +17,7 @@ loggedIn - bool
 <%view ./views/navheader.csp %>
 <!-- TODO: Table pagination -->
 <!-- Display a table containing all recent events. Pagination handled by controller. -->
-<table>
+<table class="std_table">
     <thead>
     <tr>
         <th>Host</th>
@@ -25,16 +25,37 @@ loggedIn - bool
         <th>Platform</th>
         <th>REP Rate</th>
         <th>Start Time</th>
+        <th>Link</th>
     </tr>
     </thead>
     <tbody>
     <%c++ for (std::map<std::string, std::string> &event : rgEvents) {%>
-    <tr>
-        <td>{%event["host"]%}</td>
-        <td>{%event["name"]%}</td>
-        <td>{%event["platform"]%}</td>
-        <td>{%event["rate"]%}</td>
-        <td>{%event["startTime"]%}</td>
+    <tr class="std_table_row">
+        <td>
+            <span>Host</span>
+            {%event["host"]%}
+        </td>
+        <td>
+            <span>Event Name</span>
+            {%event["name"]%}
+        </td>
+        <td>
+            <span>Platform</span>
+            {%event["platform"]%}
+        </td>
+        <td>
+            <span>REP Rate</span>
+            {%event["rate"]%}
+        </td>
+        <td>
+            <span>Start Time</span>
+            {%event["startTime"]%}
+        </td>
+        <td>
+            <span>Link</span>
+            <a href="#">Linklet</a>
+            <a href="#">Linklet 2</a>
+        </td>
     </tr>
     <%c++ } %>
     </tbody>
