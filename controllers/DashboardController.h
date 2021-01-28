@@ -35,18 +35,18 @@ public:
      * Handle a default get request without pagination parameters. Displays a table with the last 25 events
      * at most by default.
      *
-     * @param request
+     * @param req
      * @param callback
      */
-    void get(const drogon::HttpRequestPtr &request, std::function<void(const HttpResponsePtr &)> &&callback);
+    void get(const drogon::HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
     /**
      * Handle a get request with pagination data. Display the events corresponding to the requested page
      * to a maximum of 25 events.
      *
-     * @param request
+     * @param req
      * @param callback
      * @param page
      */
-    void getPaginated(const drogon::HttpRequestPtr &request, std::function<void(const HttpResponsePtr &)> &&callback,
+    void getPaginated(const drogon::HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback,
                       int page);
 };

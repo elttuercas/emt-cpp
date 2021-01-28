@@ -11,9 +11,11 @@
  */
 
 #include "Log_CreateController.h"
+
 using namespace Log;
 
-void CreateController::get(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback)
+void CreateController::get(const drogon::HttpRequestPtr &req,
+                           std::function<void(const drogon::HttpResponsePtr &)> &&callback)
 {
     drogon::HttpViewData data;
     data.insert("loggedIn", true);
@@ -22,11 +24,12 @@ void CreateController::get(const HttpRequestPtr &req, std::function<void(const H
     callback(pResponse);
 }
 
-void CreateController::post(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback)
+void CreateController::post(const drogon::HttpRequestPtr &req,
+                            std::function<void(const drogon::HttpResponsePtr &)> &&callback)
 {
     // Retrieve the form data from the request.
-    std::unordered_map<std::string, std::string> rgPostData = req->getParameters();
-    std::string strResp;
+    std::unordered_map<std::string, std::string>         rgPostData = req->getParameters();
+    std::string                                          strResp;
     for (const std::pair<const std::string, std::string> &datum : rgPostData)
     {
         strResp += "<p>" + datum.first + ": " + datum.second + "</p>";

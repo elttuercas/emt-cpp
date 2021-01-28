@@ -39,7 +39,8 @@ std::vector<std::map<std::string, std::string>> rgSampleEvents = {
         }
 };
 
-void DashboardController::get(const HttpRequestPtr &request, std::function<void(const HttpResponsePtr &)> &&callback)
+void DashboardController::get(const drogon::HttpRequestPtr &req,
+                              std::function<void(const drogon::HttpResponsePtr &)> &&callback)
 {
     // Keep a maximum of 25 events in the vector.
     if (rgSampleEvents.size() > 25)
@@ -50,13 +51,14 @@ void DashboardController::get(const HttpRequestPtr &request, std::function<void(
     // Data object to be fed to the view.
     drogon::HttpViewData data;
     data.insert("events", rgSampleEvents);
-    data.insert("loggedIn", false);
+    data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
 
     drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newHttpViewResponse("./views/dashboard.csp", data);
     callback(pResponse);
 }
 
-void DashboardController::getPaginated(const HttpRequestPtr &request, std::function<void(const HttpResponsePtr &)> &&callback,
+void DashboardController::getPaginated(const drogon::HttpRequestPtr &req,
+                                       std::function<void(const drogon::HttpResponsePtr &)> &&callback,
                                        int page)
 {
     if (page < 1)
@@ -83,7 +85,8 @@ void DashboardController::getPaginated(const HttpRequestPtr &request, std::funct
         return;
     }
 
-    std::vector<decltype(rgSampleEvents)::value_type>(rgSampleEvents.begin() + iEventsToSlice, rgSampleEvents.end()).swap(rgSampleEvents);
+    std::vector<decltype(rgSampleEvents)::value_type>(rgSampleEvents.begin() + iEventsToSlice,
+                                                      rgSampleEvents.end()).swap(rgSampleEvents);
 
     // From this point forth, the process is the same as when displaying the first 25 events by default.
     if (rgSampleEvents.size() > 25)
@@ -93,7 +96,7 @@ void DashboardController::getPaginated(const HttpRequestPtr &request, std::funct
 
     drogon::HttpViewData data;
     data.insert("events", rgSampleEvents);
-    data.insert("loggedIn", true);
+    data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
 
     drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newHttpViewResponse("./views/dashboard.csp", data);
     callback(pResponse);
