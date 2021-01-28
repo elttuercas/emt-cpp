@@ -27,13 +27,13 @@ add_executable(${PROJECT_NAME} main.cc)
 find_package(Drogon CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
 
-if (CMAKE_CXX_STANDARD LESS 17)
+if (CMAKE_CXX_STANDARD LESS 20)
     # With C++14, use boost to support any and string_view
-    message(STATUS "use c++14")
+    message(STATUS "USE C++14")
     find_package(Boost 1.61.0 REQUIRED)
     target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
 else ()
-    message(STATUS "use c++17")
+    message(STATUS "USE C++20")
 endif ()
 
 aux_source_directory(controllers CTL_SRC)
