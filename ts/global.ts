@@ -10,9 +10,6 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-import * as $ from 'jquery';
-import * as _ from 'lodash';
-
-declare var window : any;
-window.$ = window.jQuery = $;
-window._ = _;
+// Nope, this doesn't work to load lodash into _ in the window. Shoot me
+(<any>window)._ = require('lodash');
+(<any>window).$ = require('jquery');
