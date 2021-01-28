@@ -27,7 +27,7 @@ void CreateController::post(const HttpRequestPtr &req, std::function<void(const 
     // Retrieve the form data from the request.
     std::unordered_map<std::string, std::string> rgPostData = req->getParameters();
     std::string strResp;
-    for (const std::pair<const std::basic_string<char>, std::basic_string<char>> &datum : rgPostData)
+    for (const std::pair<const std::string, std::string> &datum : rgPostData)
     {
         strResp += "<p>" + datum.first + ": " + datum.second + "</p>";
     }
