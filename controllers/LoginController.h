@@ -23,7 +23,7 @@ class LoginController : public drogon::HttpController<LoginController>
 {
 public:
     METHOD_LIST_BEGIN
-        ADD_METHOD_TO(LoginController::loginTrue, "/login/", Get);
+        ADD_METHOD_TO(LoginController::loginTrue, "/login/", Get, "LoggedOutFilter");
     METHOD_LIST_END
 
     /**
