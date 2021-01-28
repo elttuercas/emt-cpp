@@ -1,5 +1,17 @@
+/*
+ * __/\\\\\\\\\\\\\\\__/\\\\____________/\\\\__/\\\\\\\\\\\\\\\_
+ *  _\/\\\///////////__\/\\\\\\________/\\\\\\_\///////\\\/////__
+ *   _\/\\\_____________\/\\\//\\\____/\\\//\\\_______\/\\\_______
+ *    _\/\\\\\\\\\\\_____\/\\\\///\\\/\\\/_\/\\\_______\/\\\_______
+ *     _\/\\\///////______\/\\\__\///\\\/___\/\\\_______\/\\\_______
+ *	    _\/\\\_____________\/\\\____\///_____\/\\\_______\/\\\_______
+ *	     _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_______
+ *        _\/\\\\\\\\\\\\\\\_\/\\\_____________\/\\\_______\/\\\_______
+ *         _\///////////////__\///______________\///________\///________
+ */
+
 const mix = require('laravel-mix');
-const tailwindcss = require('tailwindcss');
+const tailwindcss = require('tailwindcss')('./tailwind.config.js');
 
 // Add TypeScript support.
 mix.webpackConfig(
@@ -36,7 +48,7 @@ mix
         {
             processCssUrls: false,
             postCss: [
-                tailwindcss('./tailwind.config.js')
+                tailwindcss
             ]
         }
     )
@@ -48,7 +60,7 @@ mix
         {
             processCssUrls: false,
             postCss: [
-                tailwindcss('./tailwind.config.js')
+                tailwindcss
             ]
         }
     ).sass(
@@ -59,7 +71,7 @@ mix
         {
             processCssUrls: false,
             postCss: [
-                tailwindcss('./tailwind.config.js')
+                tailwindcss
             ]
         }
     ).sass(
@@ -70,7 +82,7 @@ mix
         {
             processCssUrls: false,
             postCss: [
-                tailwindcss('./tailwind.config.js')
+                tailwindcss
             ]
         }
     );
@@ -85,3 +97,6 @@ mix.styles(
     ],
     './css/global.css'
 );
+
+// Typescript compilation.
+mix.js('./ts/global.ts', './js/global.js');

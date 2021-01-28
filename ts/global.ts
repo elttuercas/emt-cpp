@@ -10,16 +10,9 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+import * as $ from 'jquery';
+import * as _ from 'lodash';
 
-body {
-    @apply bg-gray-200 antialiased font-sans;
-}
-
-div {
-    &.std_container {
-        @apply container mx-auto px-4 sm:px-8;
-    }
-}
+declare var window : any;
+window.$ = window.jQuery = $;
+window._ = _;
