@@ -27,8 +27,20 @@ namespace Log
     public:
         METHOD_LIST_BEGIN
             ADD_METHOD_TO(CreateController::get, "/log/create/", Get);
+            ADD_METHOD_TO(CreateController::post, "/log/create/", Post);
         METHOD_LIST_END
 
+        /**
+         * Displays the form to create an event log.
+         * @param req
+         * @param callback
+         */
         void get(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
+        /**
+         * Handle the user form submission and create the event log as requested.
+         * @param req
+         * @param callback
+         */
+        void post(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
     };
 }

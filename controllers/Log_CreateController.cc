@@ -21,3 +21,20 @@ void CreateController::get(const HttpRequestPtr &req, std::function<void(const H
     drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newHttpViewResponse("./views/log/create.csp", data);
     callback(pResponse);
 }
+
+void CreateController::post(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback)
+{
+    // Retrieve the form data from the request.
+    std::unordered_map<std::string, std::string> rgPostData = req->getParameters();
+    std::string strResp;
+    for (const std::pair<const std::basic_string<char>, std::basic_string<char>> &datum : rgPostData)
+    {
+        strResp += "<p>" + datum.first + ": " + datum.second + "</p>";
+    }
+
+    drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newHttpResponse();
+    pResponse->setBody(strResp);
+    pResponse->setStatusCode(k200OK);
+    pResponse->setContentTypeCode(CT_TEXT_HTML);
+    callback(pResponse);
+}

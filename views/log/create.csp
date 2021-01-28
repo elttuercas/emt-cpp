@@ -25,7 +25,7 @@ loggedIn - bool
             </div>
         </div>
         <div class="std_form_inputs_container">
-            <form action="/log/create" method="post">
+            <form action="/log/create/" method="post">
                 <div class="std_form_inputs_wrapper">
                     <div class="std_form_layout">
                         <div class="std_form_inputs">
