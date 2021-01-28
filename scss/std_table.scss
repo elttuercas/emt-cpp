@@ -149,7 +149,7 @@ div {
                                     &.std_table_pagination_buttons {
                                         @apply inline-flex mt-2 sm:mt-0;
 
-                                        > button {
+                                        button {
                                             @apply text-sm border border-green-500 px-4 py-2 hover:bg-green-500;
                                             @apply text-gray-400 font-semibold hover:border-transparent hover:text-white;
 
@@ -162,7 +162,7 @@ div {
                                             }
 
                                             &:disabled {
-                                                @apply opacity-80 border-red-500 hover:bg-red-500;
+                                                @apply opacity-80 border-red-500 hover:bg-red-900 cursor-not-allowed;
                                             }
                                         }
                                     }

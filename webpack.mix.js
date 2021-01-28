@@ -62,6 +62,17 @@ mix
                 tailwindcss('./tailwind.config.js')
             ]
         }
+    ).sass(
+        './scss/std_form.scss',
+        './css'
+    )
+    .options(
+        {
+            processCssUrls: false,
+            postCss: [
+                tailwindcss('./tailwind.config.js')
+            ]
+        }
     );
 
 // Concatenate all CSS assets together.
@@ -69,7 +80,8 @@ mix.styles(
     [
         './css/global.css',
         './css/std_nav.css',
-        './css/std_table.css'
+        './css/std_table.css',
+        './css/std_form.css'
     ],
     './css/global.css'
 );

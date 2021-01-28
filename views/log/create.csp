@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+Template data:
+loggedIn - bool
+-->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/global.css">
+    <title>EMT - Create Event Log</title>
+</head>
+<body>
+<!-- Nav menu -->
+<%view ./views/navheader.csp %>
+<div class="std_container">
+    <div class="std_form_container">
+        <div class="std_form_header_container">
+            <div class="std_form_header_text">
+                <h3>Event Data</h3>
+                <p>
+                    Select all of the relevant event data for your event and click the create button. After clicking
+                    the create button, you will be taken to the event page where you can control your event.
+                </p>
+            </div>
+        </div>
+        <div class="std_form_inputs_container">
+            <form action="/log/create" method="post">
+                <div class="std_form_inputs_wrapper">
+                    <div class="std_form_layout">
+                        <div class="std_form_inputs">
+                            <div class="std_form_input">
+                                <label for="event">Event</label>
+                                <select name="event" id="event">
+                                    <option value="1">[SMILE] Apex Slave</option>
+                                    <option value="2">[DevOps] Test Event</option>
+                                    <option value="3">[L2] Rust Wipe</option>
+                                </select>
+                            </div>
+                            <div class="std_form_input">
+                                <label for="platform">Platform</label>
+                                <select name="platform" id="platform">
+                                    <option value="1">Discord</option>
+                                    <option value="2">Twitch</option>
+                                </select>
+                            </div>
+                            <div class="std_form_input">
+                                <label for="discord_channel">Discord Channel</label>
+                                <input type="text" name="discord_channel" id="discord_channel" placeholder="Channel">
+                            </div>
+                            <div class="std_form_input">
+                                <label for="rep_rate">REP Rate</label>
+                                <select name="rep_rate" id="rep_rate">
+                                    <option value="1">0.0028 REP/s</option>
+                                    <option value="2">0.0042 REP/s</option>
+                                    <option value="3">0.0056 REP/s</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="std_form_submit_wrapper">
+                        <button type="submit">Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -9,10 +9,10 @@ loggedIn - bool
     </div>
     <div class="std_nav_menu_items_container">
         <div class="std_nav_menu_items">
-            <a href="/dashboard" class="std_nav_menu_item">Dashboard</a>
+            <a href="/dashboard/" class="std_nav_menu_item">Dashboard</a>
             <%c++ if (loggedIn) { %>
             <!-- Display link to create events to logged in users. TODO: User permission validation -->
-            <a href="/log/create" class="std_nav_menu_item">Create Event Log</a>
+            <a href="/log/create/" class="std_nav_menu_item">Create Event Log</a>
             <%c++ } %>
         </div>
         <div class="std_nav_menu_logout_container">

@@ -14,7 +14,7 @@
 
 std::vector<std::map<std::string, std::string>> rgSampleEvents = {
         {
-                {"id", "1"},
+                {"id", "3"},
                 {"host", "Silent"},
                 {"name", "[L2] Rust Wipe"},
                 {"platform", "Discord"},
@@ -30,7 +30,7 @@ std::vector<std::map<std::string, std::string>> rgSampleEvents = {
                 {"startTime", "2021-01-24 21:09 CET"}
         },
         {
-                {"id", "3"},
+                {"id", "1"},
                 {"host", "DonutKnight"},
                 {"name", "[SMILE] Apex Slave"},
                 {"platform", "Discord"},

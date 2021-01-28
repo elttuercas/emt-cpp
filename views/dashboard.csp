@@ -68,21 +68,24 @@ loggedIn - bool
                         </td>
                         <td>
                             <a href="#">Linklet</a>
-                            <a href="#">Linklet 2</a>
                         </td>
                     </tr>
                     <%c++ } %>
                     </tbody>
                 </table>
                 <div class="std_table_pagination">
-                    <span>Showing 3 out of 3 events</span>
+                    <span>Showing 1 to 3 out of 3 events</span>
                     <div class="std_table_pagination_buttons">
-                        <button class="std_table_pagination_button_prev">
-                            Prev
-                        </button>
-                        <button class="std_table_pagination_button_next">
-                            Next
-                        </button>
+                        <a href="#">
+                            <button type="button" class="std_table_pagination_button_prev">
+                                Prev
+                            </button>
+                        </a>
+                        <a href="#">
+                            <button type="button" class="std_table_pagination_button_next">
+                                Next
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
