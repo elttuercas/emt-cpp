@@ -52,9 +52,7 @@ void DashboardController::get(const drogon::HttpRequestPtr &req,
     drogon::HttpViewData data;
     data.insert("events", rgSampleEvents);
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
-
-    drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newHttpViewResponse("./views/dashboard.csp", data);
-    callback(pResponse);
+    callback(drogon::HttpResponse::newHttpViewResponse("./views/dashboard.csp", data));
 }
 
 void DashboardController::getPaginated(const drogon::HttpRequestPtr &req,
@@ -78,10 +76,7 @@ void DashboardController::getPaginated(const drogon::HttpRequestPtr &req,
          * to the last possible page.
          */
         const int               iLastPage = static_cast<int>(std::ceil(rgSampleEvents.size() / 25)) ?: 1;
-        drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newRedirectionResponse(
-                "/dashboard/" + std::to_string(iLastPage) + '/'
-        );
-        callback(pResponse);
+        callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/" + std::to_string(iLastPage) + '/'));
         return;
     }
 
@@ -97,7 +92,5 @@ void DashboardController::getPaginated(const drogon::HttpRequestPtr &req,
     drogon::HttpViewData data;
     data.insert("events", rgSampleEvents);
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
-
-    drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newHttpViewResponse("./views/dashboard.csp", data);
-    callback(pResponse);
+    callback(drogon::HttpResponse::newHttpViewResponse("./views/dashboard.csp", data));
 }

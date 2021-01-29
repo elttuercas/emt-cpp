@@ -13,6 +13,7 @@
 #pragma once
 
 #include <drogon/HttpController.h>
+#include <drogon/HttpClient.h>
 
 using namespace drogon;
 
@@ -32,4 +33,5 @@ public:
      * @param callback
      */
     void loginTrue(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
+    void handleOAuthCallback(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
 };
