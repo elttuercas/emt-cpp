@@ -12,32 +12,8 @@
 
 #include "DashboardController.h"
 
-std::vector<std::map<std::string, std::string>> rgSampleEvents = {
-        {
-                {"id", "3"},
-                {"host", "Silent"},
-                {"name", "[L2] Rust Wipe"},
-                {"platform", "Discord"},
-                {"rate", "0.0028 REP/s"},
-                {"startTime", "2021-01-25 23:05 CET"}
-        },
-        {
-                {"id", "2"},
-                {"host", "Eltu"},
-                {"name", "[DevOps] Test Event"},
-                {"platform", "Discord"},
-                {"rate", "0.0028 REP/s"},
-                {"startTime", "2021-01-24 21:09 CET"}
-        },
-        {
-                {"id", "1"},
-                {"host", "DonutKnight"},
-                {"name", "[SMILE] Apex Slave"},
-                {"platform", "Discord"},
-                {"rate", "0.0028 REP/s"},
-                {"startTime", "2019-05-24 22:05 CET"}
-        }
-};
+// Leaving this here as a placeholder until I write the code to read from the database.
+std::vector<std::map<std::string, std::string>> rgSampleEvents = {};
 
 void DashboardController::get(const drogon::HttpRequestPtr &req,
                               std::function<void(const drogon::HttpResponsePtr &)> &&callback)
@@ -63,7 +39,7 @@ void DashboardController::getPaginated(const drogon::HttpRequestPtr &req,
     {
         /*
          * Assuming that only 25 events are shown per page (as that seems reasonable) multiply the page counter
-         * minus one by 25 and thus slice them off.
+         * minus one by 25 and then slice them off.
          */
         page = 1;
     }
@@ -75,7 +51,7 @@ void DashboardController::getPaginated(const drogon::HttpRequestPtr &req,
          * Check if there are enough events to display something in the requested page. If there aren't, redirect
          * to the last possible page.
          */
-        const int               iLastPage = static_cast<int>(std::ceil(rgSampleEvents.size() / 25)) ?: 1;
+        const int iLastPage = static_cast<int>(std::ceil(rgSampleEvents.size() / 25)) ?: 1;
         callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/" + std::to_string(iLastPage) + '/'));
         return;
     }
