@@ -35,16 +35,16 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     catch (const std::out_of_range &e)
     {
         // Either the code or state are not set so redirect to login page.
-        callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
-        return;
+        /*callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+        return;*/
     }
 
     // Compare the received code with the code stored in the user's session.
     if (strState != req->session()->get<std::string>("oauthState"))
     {
         // Nope.
-        callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
-        return;
+        /*callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+        return;*/
     }
     req->session()->erase("oauthState");
 
@@ -52,8 +52,8 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     drogon::HttpRequestPtr pTokenReq = drogon::HttpRequest::newHttpFormPostRequest();
     pTokenReq->setParameter("grant_type", "authorization_code");
     pTokenReq->setParameter("code", strCode);
+    pTokenReq->setParameter("redirect_uri", "https://emt.eltu.engineer/login/callback/");
     // TODO
-    pTokenReq->setParameter("redirect_uri", "");
     pTokenReq->setParameter("client_id", "");
     pTokenReq->setParameter("client_secret", "");
 
@@ -61,7 +61,7 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient("");
     reqClient->sendRequest(
             pTokenReq,
-            [](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
+            [callback](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
             {
                 if (result == drogon::ReqResult::Ok)
                 {
