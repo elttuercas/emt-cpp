@@ -13,7 +13,7 @@ class LogoutController : public drogon::HttpSimpleController<LogoutController>
 {
 public:
     PATH_LIST_BEGIN
-        PATH_ADD("/logout/", "LoggedInFilter", HttpMethod::Get);
+        PATH_ADD("/logout/", HttpMethod::Get, "LoggedInFilter");
     PATH_LIST_END
 
     void
