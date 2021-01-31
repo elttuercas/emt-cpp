@@ -27,8 +27,8 @@ class DashboardController : public drogon::HttpController<DashboardController>
 {
 public:
     METHOD_LIST_BEGIN
-        ADD_METHOD_TO(DashboardController::get, "/dashboard/", Get);
-        ADD_METHOD_TO(DashboardController::getPaginated, "/dashboard/{1:page}/", Get);
+        ADD_METHOD_TO(DashboardController::get, "/dashboard/", HttpMethod::Get);
+        ADD_METHOD_TO(DashboardController::getPaginated, "/dashboard/{1:page}/", HttpMethod::Get);
     METHOD_LIST_END
 
     /**

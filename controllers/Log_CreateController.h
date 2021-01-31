@@ -26,8 +26,8 @@ namespace Log
     {
     public:
         METHOD_LIST_BEGIN
-            ADD_METHOD_TO(CreateController::get, "/log/create/", Get, "LoggedInFilter");
-            ADD_METHOD_TO(CreateController::post, "/log/create/", Post, "LoggedInFilter");
+            ADD_METHOD_TO(CreateController::get, "/log/create/", HttpMethod::Get, "LoggedInFilter");
+            ADD_METHOD_TO(CreateController::post, "/log/create/", HttpMethod::Post, "LoggedInFilter");
         METHOD_LIST_END
 
         /**
