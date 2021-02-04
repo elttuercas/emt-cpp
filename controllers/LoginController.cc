@@ -16,8 +16,10 @@ void LoginController::loginTrue(const drogon::HttpRequestPtr &req,
                                 std::function<void(const drogon::HttpResponsePtr &)> &&callback)
 {
     req->session()->insert("loggedIn", true);
-    drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newRedirectionResponse("/dashboard/");
-    callback(pResponse);
+    // Create a CSRF token ID and token value for the session.
+    req->session()->insert("csrfTokenID", drogon::utils::genRandomString(10));
+    req->session()->insert("csrfToken", drogon::utils::getMd5(drogon::utils::genRandomString(50)));
+    callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
 }
 
 void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
@@ -28,11 +30,11 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     // Get the callback params from the URI.
     try
     {
-        std::unordered_map<std::string, std::string> rgRequestParameters = req->getParameters();
+        const std::unordered_map<std::string, std::string> rgRequestParameters = req->getParameters();
         strCode  = rgRequestParameters.at("code");
         strState = rgRequestParameters.at("state");
     }
-    catch (const std::out_of_range &e)
+    catch (const std::out_of_range &)
     {
         // Either the code or state are not set so redirect to login page.
         /*callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
@@ -53,19 +55,21 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     pTokenReq->setParameter("grant_type", "authorization_code");
     pTokenReq->setParameter("code", strCode);
     pTokenReq->setParameter("redirect_uri", "https://emt.eltu.engineer/login/callback/");
-    // TODO
+    // TODO: Fill in the client ID and secret from IPS.
     pTokenReq->setParameter("client_id", "");
     pTokenReq->setParameter("client_secret", "");
 
-    // TODO
+    // TODO: Add OAuth token from response.
     drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient("");
     reqClient->sendRequest(
             pTokenReq,
-            [callback](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
+            [callback, &req](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
             {
                 if (result == drogon::ReqResult::Ok)
                 {
-                    
+                    // Add CSRF token to session.
+                    req->session()->insert("csrfTokenID", drogon::utils::genRandomString(10));
+                    req->session()->insert("csrfToken", drogon::utils::getMd5(drogon::utils::genRandomString(50)));
                 }
             }
     );

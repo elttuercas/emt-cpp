@@ -1,7 +1,11 @@
+<%c++ bool bErrors = @@.get<bool>("errors"); %>
 <!DOCTYPE html>
 <!--
 Template data:
 loggedIn - bool
+csrfTokenID - std::string
+csrfToken - std::string
+errors - bool
 -->
 <html lang="en">
 <head>
@@ -25,7 +29,13 @@ loggedIn - bool
             </div>
         </div>
         <div class="std_form_inputs_container">
+            <%c++ if (bErrors) { %>
+                <div class="std_form_error_display">
+                    <p>Something went wrong, please try again</p>
+                </div>
+            <%c++ } %>
             <form action="/log/create/" method="post">
+                <input type="hidden" name="[[csrfTokenID]]" value="[[csrfToken]]">
                 <div class="std_form_inputs_wrapper">
                     <div class="std_form_layout">
                         <div class="std_form_inputs">

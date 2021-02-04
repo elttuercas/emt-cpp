@@ -19,6 +19,11 @@ void CreateController::get(const drogon::HttpRequestPtr &req,
 {
     drogon::HttpViewData data;
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
+    data.insert("csrfTokenID", req->session()->get<std::string>("csrfTokenID"));
+    data.insert("csrfToken", req->session()->get<std::string>("csrfToken"));
+    // Insert whether there were errors in the request and remove the key so it defaults back to false.
+    data.insert("errors", req->session()->get<bool>("errors"));
+    req->session()->erase("errors");
     callback(drogon::HttpResponse::newHttpViewResponse("./views/log/create.csp", data));
 }
 
@@ -26,16 +31,56 @@ void CreateController::post(const drogon::HttpRequestPtr &req,
                             std::function<void(const drogon::HttpResponsePtr &)> &&callback)
 {
     // Retrieve the form data from the request.
-    std::unordered_map<std::string, std::string>         rgPostData = req->getParameters();
-    std::string                                          strResp;
-    for (const std::pair<const std::string, std::string> &datum : rgPostData)
+    const std::unordered_map<std::string, std::string>   rgPostData       = req->getParameters();
+    const auto strTokenID = req->session()->get<std::string>("csrfTokenID");
+    // Create a vector with the expected parameters.
+    std::vector<std::string>                             rgExpectedParams = {
+            "event",
+            "platform",
+            "discord_channel",
+            "rep_rate",
+            strTokenID
+    };
+    // Create a vector with the name of the input parameters.
+    std::vector<std::string>                             rgInputParams;
+    try
     {
-        strResp += "<p>" + datum.first + ": " + datum.second + "</p>";
+        rgInputParams.reserve(rgPostData.size());
+    }
+    catch (const std::length_error &)
+    {
+        /*
+         * A malicious user could cause a length_error by submitting a form with more elements than
+         * std::vector<std::string>::max_size so this catch block should redirect the user back to the
+         * log creation form with an error message.
+         */
+        req->session()->insert("errors", true);
+        callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
+        return;
+    }
+    for (const std::pair<const std::string, std::string> &postDatum : rgPostData)
+    {
+        rgInputParams.push_back(postDatum.first);
     }
 
-    drogon::HttpResponsePtr pResponse = drogon::HttpResponse::newHttpResponse();
-    pResponse->setBody(strResp);
-    pResponse->setStatusCode(drogon::HttpStatusCode::k200OK);
-    pResponse->setContentTypeCode(drogon::ContentType::CT_TEXT_HTML);
-    callback(pResponse);
+    // Sort both vector and ensure the expected keys match exactly with the received keys.
+    std::sort(rgInputParams.begin(), rgInputParams.end());
+    std::sort(rgExpectedParams.begin(), rgExpectedParams.end());
+    if (rgInputParams != rgExpectedParams)
+    {
+        req->session()->insert("errors", true);
+        callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
+        return;
+    }
+
+    // Ensure that the CSRF token in the form matches the token in the user's session.
+    if (rgPostData.at(strTokenID) != req->session()->get<std::string>("csrfToken"))
+    {
+        req->session()->insert("errors", true);
+        callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
+        return;
+    }
+
+    // TODO: Redirect to the log which has just been created.
+    callback(drogon::HttpResponse::newRedirectionResponse("/log/view/"));
 }
