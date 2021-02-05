@@ -135,9 +135,9 @@ void LoginController::get(const HttpRequestPtr &req, std::function<void(const Ht
     // Store the verifier in the session as it will be used later and like the state it is changed every time...
     req->session()->modify<std::string>(
             "oauthCodeVerifier",
-            [&strVerifier](std::string &codeVerifier)
+            [&strVerifier](std::string &sessionVerifier)
             {
-                codeVerifier = strVerifier;
+                sessionVerifier = strVerifier;
             }
     );
 

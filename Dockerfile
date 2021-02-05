@@ -42,8 +42,11 @@ COPY ./views /emt/views
 # Copy database model spec file and C++ model source files
 COPY ./models /emt/models
 
-# Install create webpack production files
+# Create webpack production files
 RUN npm run prod
+
+# Copy the cmake modules for proper compilation
+COPY ./cmake/modules /emt/cmake/modules
 
 # Change to build directory and compile the application
 WORKDIR /emt/build
