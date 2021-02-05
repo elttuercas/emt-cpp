@@ -13,7 +13,7 @@
 #include "LoginController.h"
 
 // TODO.
-const std::string LoginController::s_strOAuthClientID     = "";
+const std::string LoginController::s_strOAuthClientID     = "0312716581837523fb7a3db7d9c324ce";
 const std::string LoginController::s_strOAuthClientSecret = "";
 const std::string LoginController::s_strRedirectUrl       = "https://emt.eltu.engineer/login/callback/";
 
@@ -56,9 +56,8 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     pTokenReq->setParameter("code_verifier", req->session()->get<std::string>("oauthCodeVerifier"));
     req->session()->erase("oauthCodeVerifier");
 
-    // TODO: Set host string and path to OAuth endpoint.
-    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient("");
-    pTokenReq->setPath("");
+    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient("https://ips.eltu.engineer");
+    pTokenReq->setPath("/oauth/token/");
     reqClient->sendRequest(
             pTokenReq,
             [callback, &req](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
@@ -126,7 +125,7 @@ void LoginController::get(const HttpRequestPtr &req, std::function<void(const Ht
     );
 
     // Start generating the link the user will be taken to when they click on the login button. TODO: Add base URL.
-    std::string strOAuthLoginUrl = "";
+    std::string strOAuthLoginUrl = "https://ips.eltu.engineer/oauth/authorize/";
     strOAuthLoginUrl += "?response_type=code&client_id=" + s_strOAuthClientID + "&redirect_uri=";
     strOAuthLoginUrl += drogon::utils::urlEncodeComponent(s_strRedirectUrl);
     strOAuthLoginUrl += "&scope=emt&state=" + strOAuthState + "&code_challenge=" + strChallenge;

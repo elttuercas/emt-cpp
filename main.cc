@@ -19,6 +19,10 @@
 int main()
 {
     // Init sodium before starting the application loop.
-    sodium_init();
+    if (sodium_init() < 0)
+    {
+        // Don't bother starting the server, sodium init failed.
+        return 1;
+    }
     drogon::app().loadConfigFile("../config.json").run();
 }
