@@ -111,7 +111,7 @@ void LoginController::get(const HttpRequestPtr &req, std::function<void(const Ht
     SHA256_Init(&sha256Ctx);
     SHA256_Update(&sha256Ctx, strVerifier.c_str(), strVerifier.length());
     SHA256_Final(hash, &sha256Ctx);
-    for (unsigned char i : hash)
+    for (const unsigned char &i : hash)
     {
         std::stringstream ss;
         ss << std::hex << (int) i;
