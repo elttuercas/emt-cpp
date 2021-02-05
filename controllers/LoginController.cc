@@ -126,7 +126,7 @@ void LoginController::get(const HttpRequestPtr &req, std::function<void(const Ht
     );
 
     // Start generating the link the user will be taken to when they click on the login button. TODO: Add base URL.
-    std::string strOAuthLoginUrl = "https://ips.eltu.engineer/oauth/authorize/";
+    std::string strOAuthLoginUrl = "";
     strOAuthLoginUrl += "?response_type=code&client_id=" + s_strOAuthClientID + "&redirect_uri=";
     strOAuthLoginUrl += drogon::utils::urlEncodeComponent(s_strRedirectUrl);
     strOAuthLoginUrl += "&scope=emt&state=" + strOAuthState + "&code_challenge=" + strChallenge;
