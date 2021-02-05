@@ -10,15 +10,4 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include <drogon/drogon.h>
-#include "sodium.h"
 
-/**
- * Server loop.
- */
-int main()
-{
-    // Init sodium before starting the application loop.
-    sodium_init();
-    drogon::app().loadConfigFile("../config.json").run();
-}

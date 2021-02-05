@@ -12,15 +12,10 @@
 
 #include "LoginController.h"
 
-void LoginController::loginTrue(const drogon::HttpRequestPtr &req,
-                                std::function<void(const drogon::HttpResponsePtr &)> &&callback)
-{
-    req->session()->insert("loggedIn", true);
-    // Create a CSRF token ID and token value for the session.
-    req->session()->insert("csrfTokenID", drogon::utils::genRandomString(10));
-    req->session()->insert("csrfToken", drogon::utils::getMd5(drogon::utils::genRandomString(50)));
-    callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
-}
+// TODO.
+const std::string LoginController::s_strOAuthClientID     = "";
+const std::string LoginController::s_strOAuthClientSecret = "";
+const std::string LoginController::s_strRedirectUrl       = "https://emt.eltu.engineer/login/callback/";
 
 void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
                                           std::function<void(const drogon::HttpResponsePtr &)> &&callback)
@@ -37,16 +32,17 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     catch (const std::out_of_range &)
     {
         // Either the code or state are not set so redirect to login page.
-        /*callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
-        return;*/
+        req->session()->insert("errors", true);
+        callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+        return;
     }
 
     // Compare the received code with the code stored in the user's session.
     if (strState != req->session()->get<std::string>("oauthState"))
     {
-        // Nope.
-        /*callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
-        return;*/
+        req->session()->insert("errors", true);
+        callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+        return;
     }
     req->session()->erase("oauthState");
 
@@ -54,13 +50,15 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     drogon::HttpRequestPtr pTokenReq = drogon::HttpRequest::newHttpFormPostRequest();
     pTokenReq->setParameter("grant_type", "authorization_code");
     pTokenReq->setParameter("code", strCode);
-    pTokenReq->setParameter("redirect_uri", "https://emt.eltu.engineer/login/callback/");
-    // TODO: Fill in the client ID and secret from IPS.
-    pTokenReq->setParameter("client_id", "");
-    pTokenReq->setParameter("client_secret", "");
+    pTokenReq->setParameter("redirect_uri", s_strRedirectUrl);
+    pTokenReq->setParameter("client_id", s_strOAuthClientID);
+    pTokenReq->setParameter("client_secret", s_strOAuthClientSecret);
+    pTokenReq->setParameter("code_verifier", req->session()->get<std::string>("oauthCodeVerifier"));
+    req->session()->erase("oauthCodeVerifier");
 
-    // TODO: Add OAuth token from response.
+    // TODO: Set host string and path to OAuth endpoint.
     drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient("");
+    pTokenReq->setPath("");
     reqClient->sendRequest(
             pTokenReq,
             [callback, &req](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
@@ -70,7 +68,84 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
                     // Add CSRF token to session.
                     req->session()->insert("csrfTokenID", drogon::utils::genRandomString(10));
                     req->session()->insert("csrfToken", drogon::utils::getMd5(drogon::utils::genRandomString(50)));
+                    req->session()->insert("loggedIn", true);
+                    const std::shared_ptr<Json::Value> jsonRespData = resp->getJsonObject();
+                    // Access token to make API calls.
+                    req->session()->insert("apiAccessToken", (*jsonRespData)["access_token"].asString());
+                    callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
+                }
+                else
+                {
+                    req->session()->insert("errors", true);
+                    callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
                 }
             }
     );
+}
+
+void LoginController::get(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback)
+{
+    std::string strOAuthState = drogon::utils::genRandomString(128);
+    // A new state is generated and used to create the link every time the user visits the page.
+    req->session()->modify<std::string>(
+            "oauthState",
+            [&strOAuthState](std::string &sessionState)
+            {
+                sessionState = strOAuthState;
+            }
+    );
+
+    // Since we implement PKCE with OAuth, generate a code verifier and challenge.
+    char strRandomBytes[32];
+    randombytes_buf(strRandomBytes, 32);
+    std::string strVerifier = drogon::utils::base64Encode(
+            reinterpret_cast<const unsigned char *>(strRandomBytes),
+            32,
+            true
+    );
+
+    // Calculate SHA256 of verifier to obtain the challenge.
+    std::string   strChallenge;
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256_CTX    sha256Ctx;
+    SHA256_Init(&sha256Ctx);
+    SHA256_Update(&sha256Ctx, strVerifier.c_str(), strVerifier.length());
+    SHA256_Final(hash, &sha256Ctx);
+    for (unsigned char i : hash)
+    {
+        std::stringstream ss;
+        ss << std::hex << (int) i;
+        strChallenge += ss.str();
+    }
+
+    // Base 64 encode the challenge as well.
+    strChallenge = drogon::utils::base64Encode(
+            reinterpret_cast<const unsigned char *>(strChallenge.c_str()),
+            strChallenge.length(),
+            true
+    );
+
+    // Start generating the link the user will be taken to when they click on the login button. TODO: Add base URL.
+    std::string strOAuthLoginUrl = "https://ips.eltu.engineer/oauth/authorize/";
+    strOAuthLoginUrl += "?response_type=code&client_id=" + s_strOAuthClientID + "&redirect_uri=";
+    strOAuthLoginUrl += drogon::utils::urlEncodeComponent(s_strRedirectUrl);
+    strOAuthLoginUrl += "&scope=emt&state=" + strOAuthState + "&code_challenge=" + strChallenge;
+    strOAuthLoginUrl += "&code_challenge_method=S256";
+
+    // Store the verifier in the session as it will be used later and like the state it is changed every time...
+    req->session()->modify<std::string>(
+            "oauthCodeVerifier",
+            [&strVerifier](std::string &codeVerifier)
+            {
+                codeVerifier = strVerifier;
+            }
+    );
+
+    drogon::HttpViewData data;
+    data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
+    data.insert("oauthLoginUrl", strOAuthLoginUrl);
+    data.insert("errors", req->session()->get<bool>("errors"));
+    req->session()->erase("errors");
+
+    callback(drogon::HttpResponse::newHttpViewResponse("./views/login.csp", data));
 }

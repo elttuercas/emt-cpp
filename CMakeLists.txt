@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.19)
 project(emt-cpp LANGUAGES CXX VERSION 0.1.0)
 message("${PROJECT_NAME} VERSION ${CMAKE_PROJECT_VERSION}")
 
@@ -24,8 +24,13 @@ add_executable(${PROJECT_NAME} main.cc)
 # target_link_libraries(${PROJECT_NAME} PRIVATE drogon)
 # ##############################################################################
 
+# Include libsodium
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
+
 find_package(Drogon CONFIG REQUIRED)
+find_package(sodium REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
+target_link_libraries(${PROJECT_NAME} PRIVATE sodium)
 
 if (CMAKE_CXX_STANDARD LESS 20)
     # With C++14, use boost to support any and string_view

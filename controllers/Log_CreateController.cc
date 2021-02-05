@@ -24,6 +24,7 @@ void CreateController::get(const drogon::HttpRequestPtr &req,
     // Insert whether there were errors in the request and remove the key so it defaults back to false.
     data.insert("errors", req->session()->get<bool>("errors"));
     req->session()->erase("errors");
+
     callback(drogon::HttpResponse::newHttpViewResponse("./views/log/create.csp", data));
 }
 
