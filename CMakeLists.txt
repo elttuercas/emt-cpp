@@ -28,7 +28,7 @@ add_executable(${PROJECT_NAME} main.cc)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 
 find_package(Drogon CONFIG REQUIRED)
-find_package(sodium REQUIRED)
+find_package(Sodium REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Drogon::Drogon)
 target_link_libraries(${PROJECT_NAME} PRIVATE sodium)
 

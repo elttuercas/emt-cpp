@@ -12,7 +12,6 @@
 
 #include "LoginController.h"
 
-// TODO.
 const std::string LoginController::s_strOAuthClientID     = "0312716581837523fb7a3db7d9c324ce";
 const std::string LoginController::s_strOAuthClientSecret = "";
 const std::string LoginController::s_strRedirectUrl       = "https://emt.eltu.engineer/login/callback/";
