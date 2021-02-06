@@ -4,8 +4,8 @@
  *   _\/\\\_____________\/\\\//\\\____/\\\//\\\_______\/\\\_______
  *    _\/\\\\\\\\\\\_____\/\\\\///\\\/\\\/_\/\\\_______\/\\\_______
  *     _\/\\\///////______\/\\\__\///\\\/___\/\\\_______\/\\\_______
- *	    _\/\\\_____________\/\\\____\///_____\/\\\_______\/\\\_______
- *	     _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_______
+ *      _\/\\\_____________\/\\\____\///_____\/\\\_______\/\\\_______
+ *       _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_______
  *        _\/\\\\\\\\\\\\\\\_\/\\\_____________\/\\\_______\/\\\_______
  *         _\///////////////__\///______________\///________\///________
  */
@@ -63,9 +63,6 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
             {
                 if (result == drogon::ReqResult::Ok)
                 {
-                    // Add CSRF token to session.
-                    req->session()->insert("csrfTokenID", drogon::utils::genRandomString(10));
-                    req->session()->insert("csrfToken", drogon::utils::getMd5(drogon::utils::genRandomString(50)));
                     req->session()->insert("loggedIn", true);
                     const std::shared_ptr<Json::Value> jsonRespData = resp->getJsonObject();
                     // Access token to make API calls.

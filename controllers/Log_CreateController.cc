@@ -4,8 +4,8 @@
  *   _\/\\\_____________\/\\\//\\\____/\\\//\\\_______\/\\\_______
  *    _\/\\\\\\\\\\\_____\/\\\\///\\\/\\\/_\/\\\_______\/\\\_______
  *     _\/\\\///////______\/\\\__\///\\\/___\/\\\_______\/\\\_______
- *	    _\/\\\_____________\/\\\____\///_____\/\\\_______\/\\\_______
- *	     _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_______
+ *      _\/\\\_____________\/\\\____\///_____\/\\\_______\/\\\_______
+ *       _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_______
  *        _\/\\\\\\\\\\\\\\\_\/\\\_____________\/\\\_______\/\\\_______
  *         _\///////////////__\///______________\///________\///________
  */
@@ -17,10 +17,31 @@ using namespace Log;
 void CreateController::get(const drogon::HttpRequestPtr &req,
                            std::function<void(const drogon::HttpResponsePtr &)> &&callback)
 {
+    // Create a CSRF Token for the member each time they visit the page to make it extra secure.
+    std::string strCsrfToken, strCsrfTokenID;
+    strCsrfTokenID = drogon::utils::genRandomString(10);
+    strCsrfToken   = drogon::utils::getMd5(drogon::utils::genRandomString(50));
+
+    // Insert into session for evaluation with form submission.
+    req->session()->modify<std::string>(
+            "csrfTokenID",
+            [&strCsrfTokenID](std::string &sessionCsrfTokenID)
+            {
+                sessionCsrfTokenID = strCsrfTokenID;
+            }
+    );
+    req->session()->modify<std::string>(
+            "csrfToken",
+            [&strCsrfToken](std::string &sessionCsrfToken)
+            {
+                sessionCsrfToken = strCsrfToken;
+            }
+    );
+
     drogon::HttpViewData data;
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
-    data.insert("csrfTokenID", req->session()->get<std::string>("csrfTokenID"));
-    data.insert("csrfToken", req->session()->get<std::string>("csrfToken"));
+    data.insert("csrfTokenID", strCsrfTokenID);
+    data.insert("csrfToken", strCsrfToken);
     // Insert whether there were errors in the request and remove the key so it defaults back to false.
     data.insert("errors", req->session()->get<bool>("errors"));
     req->session()->erase("errors");
@@ -32,7 +53,8 @@ void CreateController::post(const drogon::HttpRequestPtr &req,
                             std::function<void(const drogon::HttpResponsePtr &)> &&callback)
 {
     // Retrieve the form data from the request.
-    const std::unordered_map<std::string, std::string>   rgPostData       = req->getParameters();
+    const std::unordered_map<std::string, std::string> rgPostData = req->getParameters();
+
     const auto strTokenID = req->session()->get<std::string>("csrfTokenID");
     // Create a vector with the expected parameters.
     std::vector<std::string>                             rgExpectedParams = {
