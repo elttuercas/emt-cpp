@@ -48,11 +48,17 @@ errors - bool
                                 </select>
                             </div>
                             <div class="std_form_input">
-                                <label for="platform">Platform</label>
-                                <select name="platform" id="platform">
-                                    <option value="1">Discord</option>
-                                    <option value="2">Twitch</option>
-                                </select>
+                                <fieldset>
+                                    <legend>Platform</legend>
+                                    <div class="std_form_radio">
+                                        <input type="radio" id="pl_1" name="platform" value="1">
+                                        <label for="pl_1">Discord</label>
+                                    </div>
+                                    <div class="std_form_radio">
+                                        <input type="radio" id="pl_2" name="platform" value="2">
+                                        <label for="pl_2">Twitch</label>
+                                    </div>
+                                </fieldset>
                             </div>
                             <div class="std_form_input">
                                 <label for="discord_channel">Discord Channel</label>

@@ -69,7 +69,7 @@ div {
                                                 @apply block text-sm font-medium text-gray-400;
                                             }
 
-                                            input, select {
+                                            input:not(input[type="radio"]), select {
                                                 @apply focus:ring-green-500 focus:border-green-500 flex-1 block;
                                                 @apply rounded-md sm:text-sm border-gray-300 mt-1 w-full lg:w-1/2;
 
@@ -78,8 +78,30 @@ div {
                                                 }
                                             }
 
+                                            div {
+                                                &.std_form_radio {
+                                                    @apply block;
+
+                                                    input[type="radio"] {
+                                                        @apply outline-none focus:ring-0 focus:ring-offset-0;
+
+                                                        &:checked {
+                                                            @apply bg-green-500;
+                                                        }
+
+                                                        + label {
+                                                            @apply inline-block;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
                                             p {
                                                 @apply mt-2 text-sm text-gray-500;
+                                            }
+
+                                            legend {
+                                                @apply text-sm font-medium text-gray-400;
                                             }
                                         }
                                     }

@@ -86,7 +86,7 @@ void CreateController::post(const drogon::HttpRequestPtr &req,
         rgInputParams.push_back(postDatum.first);
     }
 
-    // Sort both vector and ensure the expected keys match exactly with the received keys.
+    // Sort both vectors and ensure the expected keys match exactly with the received keys.
     std::sort(rgInputParams.begin(), rgInputParams.end());
     std::sort(rgExpectedParams.begin(), rgExpectedParams.end());
     if (rgInputParams != rgExpectedParams)
