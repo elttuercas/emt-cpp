@@ -121,6 +121,8 @@ void LoginController::get(const HttpRequestPtr &req, std::function<void(const Ht
             strChallenge.length(),
             true
     );
+    // And make the challenge URL safe as well since base64 encoding is not URL safe.
+    strChallenge = drogon::utils::urlEncodeComponent(strChallenge);
 
     // Start generating the link the user will be taken to when they click on the login button.
     std::string strOAuthLoginUrl = s_strInvisionCommunityUrl + "/oauth/authorize/";
