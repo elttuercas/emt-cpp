@@ -55,7 +55,8 @@ void CreateController::post(const drogon::HttpRequestPtr &req,
     // Retrieve the form data from the request.
     const std::unordered_map<std::string, std::string> rgPostData = req->getParameters();
 
-    const auto strTokenID = req->session()->get<std::string>("csrfTokenID");
+    const auto                                           strTokenID       = req->session()->get<std::string>(
+            "csrfTokenID");
     // Create a vector with the expected parameters.
     std::vector<std::string>                             rgExpectedParams = {
             "event",

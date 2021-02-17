@@ -53,7 +53,11 @@ private:
      */
     static const std::string s_strOAuthClientSecret;
     /**
-     * The URI to which the user will be redirected in our application after accepting to log in.
+     * The URL to which the user will be redirected in our application after accepting to log in.
      */
     static const std::string s_strRedirectUrl;
+    /**
+     * The URL where the POST request will be sent to obtain the authorisation token.
+     */
+    static const std::string s_strInvisionCommunityUrl;
 };

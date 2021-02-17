@@ -12,9 +12,11 @@
 
 #include "LoginController.h"
 
-const std::string LoginController::s_strOAuthClientID     = "0312716581837523fb7a3db7d9c324ce";
-const std::string LoginController::s_strOAuthClientSecret = "";
-const std::string LoginController::s_strRedirectUrl       = "https://emt.eltu.engineer/login/callback/";
+const std::string LoginController::s_strOAuthClientID        = "0312716581837523fb7a3db7d9c324ce";
+const std::string LoginController::s_strOAuthClientSecret    = "";
+const std::string LoginController::s_strRedirectUrl          = "https://emt.eltu.engineer/login/callback/";
+const std::string LoginController::s_strInvisionCommunityUrl = "https://ips.eltu.engineer";
+
 
 void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
                                           std::function<void(const drogon::HttpResponsePtr &)> &&callback)
@@ -55,7 +57,7 @@ void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
     pTokenReq->setParameter("code_verifier", req->session()->get<std::string>("oauthCodeVerifier"));
     req->session()->erase("oauthCodeVerifier");
 
-    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient("https://ips.eltu.engineer");
+    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient(s_strInvisionCommunityUrl);
     pTokenReq->setPath("/oauth/token/");
     reqClient->sendRequest(
             pTokenReq,
@@ -120,8 +122,8 @@ void LoginController::get(const HttpRequestPtr &req, std::function<void(const Ht
             true
     );
 
-    // Start generating the link the user will be taken to when they click on the login button. TODO: Add base URL.
-    std::string strOAuthLoginUrl = "https://ips.eltu.engineer/oauth/authorize/";
+    // Start generating the link the user will be taken to when they click on the login button.
+    std::string strOAuthLoginUrl = s_strInvisionCommunityUrl + "/oauth/authorize/";
     strOAuthLoginUrl += "?response_type=code&client_id=" + s_strOAuthClientID + "&redirect_uri=";
     strOAuthLoginUrl += drogon::utils::urlEncodeComponent(s_strRedirectUrl);
     strOAuthLoginUrl += "&scope=emt&state=" + strOAuthState + "&code_challenge=" + strChallenge;
