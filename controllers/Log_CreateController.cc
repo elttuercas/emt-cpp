@@ -14,8 +14,10 @@
 
 using namespace Log;
 
-void CreateController::get(const drogon::HttpRequestPtr &req,
-                           std::function<void(const drogon::HttpResponsePtr &)> &&callback)
+void CreateController::get(
+        const drogon::HttpRequestPtr &req,
+        std::function<void(const drogon::HttpResponsePtr &)> &&callback
+)
 {
     // Create a CSRF Token for the member each time they visit the page to make it extra secure.
     std::string strCsrfToken, strCsrfTokenID;
@@ -49,8 +51,10 @@ void CreateController::get(const drogon::HttpRequestPtr &req,
     callback(drogon::HttpResponse::newHttpViewResponse("./views/log/create.csp", data));
 }
 
-void CreateController::post(const drogon::HttpRequestPtr &req,
-                            std::function<void(const drogon::HttpResponsePtr &)> &&callback)
+void CreateController::post(
+        const drogon::HttpRequestPtr &req,
+        std::function<void(const drogon::HttpResponsePtr &)> &&callback
+)
 {
     // Retrieve the form data from the request.
     const std::unordered_map<std::string, std::string> rgPostData = req->getParameters();

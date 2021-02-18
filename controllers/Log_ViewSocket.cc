@@ -10,12 +10,24 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include "RootController.h"
+#include "Log_ViewSocket.h"
 
-void RootController::asyncHandleHttpRequest(
-        const HttpRequestPtr &req,
-        std::function<void(const HttpResponsePtr &)> &&callback
+using namespace Log;
+
+void ViewSocket::handleNewMessage(
+        const WebSocketConnectionPtr &wsConnPtr,
+        std::string &&message,
+        const WebSocketMessageType &type
 )
 {
-    callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
+
+}
+
+void ViewSocket::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr)
+{
+}
+
+void ViewSocket::handleConnectionClosed(const WebSocketConnectionPtr &wsConnPtr)
+{
+    //write your application logic here
 }

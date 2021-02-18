@@ -18,7 +18,9 @@ using namespace drogon;
 namespace Log
 {
     /**
-     * Class to test the log create view.
+     * Class Log::CreateController. This class handles displaying the form to create an event log
+     * when accessed with the HTTP GET method and handles the form submission in the same path when the result is
+     * submitted with the HTTP POST method.
      *
      * @author Carlos Amores
      */
@@ -37,7 +39,7 @@ namespace Log
          */
         void get(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
         /**
-         * Handle the user form submission and create the event log as requested.
+         * Handle the user form submission, validate input and create the event log.
          * @param req
          * @param callback
          */

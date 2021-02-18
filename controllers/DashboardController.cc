@@ -13,10 +13,21 @@
 #include "DashboardController.h"
 
 // Leaving this here as a placeholder until I write the code to read from the database.
-std::vector<std::map<std::string, std::string>> rgSampleEvents = {};
+std::vector<std::map<std::string, std::string>> rgSampleEvents = {
+        {
+                {"id", "3"},
+                {"host", "Silent"},
+                {"name", "[L2] Rust Wipe"},
+                {"platform", "Discord"},
+                {"rate", "0.0028 REP/s"},
+                {"startTime", "2021-01-25 23:05 CET"}
+        }
+};
 
-void DashboardController::get(const drogon::HttpRequestPtr &req,
-                              std::function<void(const drogon::HttpResponsePtr &)> &&callback)
+void DashboardController::get(
+        const drogon::HttpRequestPtr &req,
+        std::function<void(const drogon::HttpResponsePtr &)> &&callback
+)
 {
     // Keep a maximum of 25 events in the vector.
     if (rgSampleEvents.size() > 25)
@@ -31,9 +42,11 @@ void DashboardController::get(const drogon::HttpRequestPtr &req,
     callback(drogon::HttpResponse::newHttpViewResponse("./views/dashboard.csp", data));
 }
 
-void DashboardController::getPaginated(const drogon::HttpRequestPtr &req,
-                                       std::function<void(const drogon::HttpResponsePtr &)> &&callback,
-                                       int page)
+void DashboardController::getPaginated(
+        const drogon::HttpRequestPtr &req,
+        std::function<void(const drogon::HttpResponsePtr &)> &&callback,
+        int page
+)
 {
     if (page < 1)
     {

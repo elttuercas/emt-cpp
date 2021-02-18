@@ -18,8 +18,10 @@ const std::string LoginController::s_strRedirectUrl          = "https://emt.eltu
 const std::string LoginController::s_strInvisionCommunityUrl = "https://ips.eltu.engineer";
 
 
-void LoginController::handleOAuthCallback(const drogon::HttpRequestPtr &req,
-                                          std::function<void(const drogon::HttpResponsePtr &)> &&callback)
+void LoginController::handleOAuthCallback(
+        const drogon::HttpRequestPtr &req,
+        std::function<void(const drogon::HttpResponsePtr &)> &&callback
+)
 {
     std::string strCode, strState;
 
