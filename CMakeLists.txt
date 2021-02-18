@@ -25,7 +25,7 @@ add_executable(${PROJECT_NAME} main.cc)
 # ##############################################################################
 
 # Include libsodium
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
 find_package(Drogon CONFIG REQUIRED)
 find_package(Sodium REQUIRED)

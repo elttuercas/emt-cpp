@@ -46,7 +46,7 @@ COPY ./models /emt/models
 RUN npm run prod
 
 # Copy the cmake modules for proper compilation
-COPY ./cmake/modules /emt/cmake/modules
+COPY ./cmake_modules /emt/cmake_modules
 
 # Change to build directory and compile the application
 WORKDIR /emt/build

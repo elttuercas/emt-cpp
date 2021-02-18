@@ -62,7 +62,8 @@ errors - bool
                             </div>
                             <div class="std_form_input">
                                 <label for="discord_channel">Discord Channel</label>
-                                <input type="text" name="discord_channel" id="discord_channel" placeholder="Channel">
+                                <!-- TODO: Set the user's current channel as the value -->
+                                <input type="text" name="discord_channel" id="discord_channel" placeholder="Not in a channel" value="" disabled>
                             </div>
                             <div class="std_form_input">
                                 <label for="rep_rate">REP Rate</label>
