@@ -15,19 +15,48 @@
 using namespace Log;
 
 void ViewSocket::handleNewMessage(
-        const WebSocketConnectionPtr &wsConnPtr,
+        const drogon::WebSocketConnectionPtr &wsConnPtr,
         std::string &&message,
-        const WebSocketMessageType &type
+        const drogon::WebSocketMessageType &type
 )
 {
-
 }
 
-void ViewSocket::handleNewConnection(const HttpRequestPtr &req, const WebSocketConnectionPtr &wsConnPtr)
+void ViewSocket::handleNewConnection(
+        const drogon::HttpRequestPtr &req,
+        const drogon::WebSocketConnectionPtr &wsConnPtr
+)
 {
+    // TODO: Validate the event ID received in the request is a currently running valid event.
+    std::string strEventID = req->getParameter("event_id");
+    if (strEventID.empty())
+    {
+        /*
+         * There is no event ID in the URL so close the socket immediately.
+         * TODO: Send error message prior to force closing the connection.
+         */
+        wsConnPtr->forceClose();
+        return;
+    }
+
+    // Insert the websocket pointer into the container.
+    //s_rgOpenSockets[strEventID].push_back(wsConnPtr);
+    // Map the socket to the event it was created for.
+    //s_rgSocketEvent[wsConnPtr] = strEventID;
 }
 
-void ViewSocket::handleConnectionClosed(const WebSocketConnectionPtr &wsConnPtr)
+void ViewSocket::handleConnectionClosed(const drogon::WebSocketConnectionPtr &wsConnPtr)
 {
-    //write your application logic here
+    // Get the event for which the websocket was created.
+    //std::string strEventID = s_rgSocketEvent[wsConnPtr];
+    // Locate the pointer to be deleted in the pointer container.
+    /*auto        it         = std::find(
+            s_rgOpenSockets[strEventID].begin(),
+            s_rgOpenSockets[strEventID].end(),
+            wsConnPtr
+    );*/
+    // Delete the pointer from the container.
+    //s_rgOpenSockets[strEventID].erase(it);
+    // Delete the map entry for the specified pointer.
+    //s_rgSocketEvent.erase(wsConnPtr);
 }

@@ -27,21 +27,27 @@ namespace Log
     {
     public:
         /**
-         * Function called when a new message is received from a client currently connected to the websocket.
+         * Stores pointers to the currently open web sockets separated based on event IDs.
          */
-        virtual void handleNewMessage(const WebSocketConnectionPtr &,
+        static std::map<std::string, std::vector<WebSocketConnectionPtr>> s_rgOpenSockets;
+        static std::map<WebSocketConnectionPtr, std::string> s_rgSocketEvent;
+
+        /**
+         * Function called when a new message is received from a client currently connected to the websocket.
+         * This function is unused.
+         */
+        void handleNewMessage(const WebSocketConnectionPtr &,
                                       std::string &&,
                                       const WebSocketMessageType &) override;
         /**
          * Function called when a new connection is made from a client to the websocket path specified in this
          * controller.
          */
-        virtual void handleNewConnection(const HttpRequestPtr &,
-                                         const WebSocketConnectionPtr &) override;
+        void handleNewConnection(const HttpRequestPtr &, const WebSocketConnectionPtr &) override;
         /**
          * Function called when a connection made to the path specified in this controller is closed.
          */
-        virtual void handleConnectionClosed(const WebSocketConnectionPtr &) override;
+        void handleConnectionClosed(const WebSocketConnectionPtr &) override;
 
         WS_PATH_LIST_BEGIN
             WS_PATH_ADD("/log/view/");
