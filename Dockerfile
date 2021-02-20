@@ -50,7 +50,7 @@ COPY ./cmake_modules /emt/cmake_modules
 
 # Change to build directory and compile the application
 WORKDIR /emt/build
-RUN cmake -DCMAKE_BUILD_TYPE=Release ..
+RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fcoroutines" ..
 RUN make
 
 # Run web application

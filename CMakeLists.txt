@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.19)
 project(emt-cpp LANGUAGES CXX VERSION 0.1.0)
-message("${PROJECT_NAME} VERSION ${CMAKE_PROJECT_VERSION}")
+message(STATUS "${PROJECT_NAME} VERSION ${CMAKE_PROJECT_VERSION}")
 
 include(CheckIncludeFileCXX)
 
 check_include_file_cxx(any HAS_ANY)
 check_include_file_cxx(string_view HAS_STRING_VIEW)
-if (HAS_ANY AND HAS_STRING_VIEW)
+check_include_file_cxx(coroutine HAS_COROUTINE)
+if (HAS_ANY AND HAS_STRING_VIEW AND HAS_COROUTINE)
     set(CMAKE_CXX_STANDARD 20)
 else ()
     set(CMAKE_CXX_STANDARD 14)
