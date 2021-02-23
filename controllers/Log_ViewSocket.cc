@@ -14,6 +14,9 @@
 
 using namespace Log;
 
+std::map<std::string, std::vector<WebSocketConnectionPtr>> ViewSocket::s_rgOpenSockets;
+std::map<WebSocketConnectionPtr, std::string>              ViewSocket::s_rgSocketEvent;
+
 void ViewSocket::handleNewMessage(
         const drogon::WebSocketConnectionPtr &wsConnPtr,
         std::string &&message,
@@ -27,7 +30,11 @@ void ViewSocket::handleNewConnection(
         const drogon::WebSocketConnectionPtr &wsConnPtr
 )
 {
-    // TODO: Validate the event ID received in the request is a currently running valid event.
+    /*
+     * TODO: Validate the event ID received in the request is a currently running valid event.
+     * It must be a running event because otherwise there is no point in opening a websocket for
+     * an event which is not going to receive updates.
+     */
     std::string strEventID = req->getParameter("event_id");
     if (strEventID.empty())
     {
@@ -40,23 +47,23 @@ void ViewSocket::handleNewConnection(
     }
 
     // Insert the websocket pointer into the container.
-    //s_rgOpenSockets[strEventID].push_back(wsConnPtr);
+    s_rgOpenSockets[strEventID].push_back(wsConnPtr);
     // Map the socket to the event it was created for.
-    //s_rgSocketEvent[wsConnPtr] = strEventID;
+    s_rgSocketEvent[wsConnPtr] = strEventID;
 }
 
 void ViewSocket::handleConnectionClosed(const drogon::WebSocketConnectionPtr &wsConnPtr)
 {
     // Get the event for which the websocket was created.
-    //std::string strEventID = s_rgSocketEvent[wsConnPtr];
+    std::string strEventID = s_rgSocketEvent[wsConnPtr];
     // Locate the pointer to be deleted in the pointer container.
-    /*auto        it         = std::find(
+    auto        it         = std::find(
             s_rgOpenSockets[strEventID].begin(),
             s_rgOpenSockets[strEventID].end(),
             wsConnPtr
-    );*/
+    );
     // Delete the pointer from the container.
-    //s_rgOpenSockets[strEventID].erase(it);
+    s_rgOpenSockets[strEventID].erase(it);
     // Delete the map entry for the specified pointer.
-    //s_rgSocketEvent.erase(wsConnPtr);
+    s_rgSocketEvent.erase(wsConnPtr);
 }
