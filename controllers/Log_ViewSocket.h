@@ -29,7 +29,7 @@ namespace Log
         /**
          * Stores pointers to the currently open web sockets separated based on event IDs.
          */
-        static std::map<std::string, std::vector<WebSocketConnectionPtr>> s_rgOpenSockets;
+        static std::map<std::string, std::deque<WebSocketConnectionPtr>> s_rgOpenSockets;
         /**
          * Stores a map of websocket connection pointers associated with the event ID for which
          * they were opened.

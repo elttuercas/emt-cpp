@@ -14,7 +14,7 @@
 
 using namespace Log;
 
-std::map<std::string, std::vector<WebSocketConnectionPtr>> ViewSocket::s_rgOpenSockets;
+std::map<std::string, std::deque<WebSocketConnectionPtr>>  ViewSocket::s_rgOpenSockets;
 std::map<WebSocketConnectionPtr, std::string>              ViewSocket::s_rgSocketEvent;
 
 void ViewSocket::handleNewMessage(
@@ -38,10 +38,16 @@ void ViewSocket::handleNewConnection(
     std::string strEventID = req->getParameter("event_id");
     if (strEventID.empty())
     {
-        /*
-         * There is no event ID in the URL so close the socket immediately.
-         * TODO: Send error message prior to force closing the connection.
-         */
+        // There is no event ID in the URL so close the socket immediately.
+        Json::Value jsonErrMessage;
+        jsonErrMessage["is_error"] = true;
+        jsonErrMessage["error"]    = "Invalid event ID";
+        jsonErrMessage["errno"]    = 1;
+
+        Json::StreamWriterBuilder builder;
+        builder["indentation"] = "";
+
+        wsConnPtr->send(Json::writeString(builder, jsonErrMessage));
         wsConnPtr->forceClose();
         return;
     }
@@ -55,9 +61,22 @@ void ViewSocket::handleNewConnection(
 void ViewSocket::handleConnectionClosed(const drogon::WebSocketConnectionPtr &wsConnPtr)
 {
     // Get the event for which the websocket was created.
-    std::string strEventID = s_rgSocketEvent[wsConnPtr];
+    std::string strEventID;
+    try
+    {
+        strEventID = s_rgSocketEvent.at(wsConnPtr);
+    }
+    catch (const std::out_of_range &)
+    {
+        /*
+         * This can happen when calling forceClose on a websocket that has just been created
+         * prior to being closed due to malformed request. Meaning that if it cannot be found
+         * it does not exist in either the map or the deque so there is nothing further to do.
+         */
+        return;
+    }
     // Locate the pointer to be deleted in the pointer container.
-    auto        it         = std::find(
+    auto        it = std::find(
             s_rgOpenSockets[strEventID].begin(),
             s_rgOpenSockets[strEventID].end(),
             wsConnPtr
