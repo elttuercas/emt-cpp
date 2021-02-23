@@ -14,8 +14,8 @@
 
 #include <drogon/HttpController.h>
 #include <drogon/HttpClient.h>
-#include "sodium/randombytes.h"
-#include "openssl/sha.h"
+#include <sodium/randombytes.h>
+#include <openssl/sha.h>
 
 using namespace drogon;
 

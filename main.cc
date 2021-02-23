@@ -11,7 +11,7 @@
  */
 
 #include <drogon/drogon.h>
-#include "sodium.h"
+#include <sodium.h>
 
 /**
  * Server loop.
