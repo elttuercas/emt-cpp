@@ -16,6 +16,7 @@
 #include "Log_ViewSocket.h"
 
 using namespace drogon;
+
 /**
  * Class BroadcastTestController
  *

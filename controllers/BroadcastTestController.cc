@@ -18,7 +18,7 @@ void BroadcastTestController::asyncHandleHttpRequest(
 )
 {
     std::string                                strEventID     = req->getParameter("event_id");
-    std::deque<drogon::WebSocketConnectionPtr> *rgOpenSockets = &Log::ViewSocket::s_rgOpenSockets.at(strEventID);
+    std::deque<drogon::WebSocketConnectionPtr> *prgOpenSockets = &Log::ViewSocket::s_rgOpenSockets.at(strEventID);
     Json::Value                                jsonTestData;
     jsonTestData["is_error"] = false;
     jsonTestData["message"]  = "Broadcast test";
@@ -29,7 +29,7 @@ void BroadcastTestController::asyncHandleHttpRequest(
     std::string strJsonTestData = Json::writeString(builder, jsonTestData);
 
     // Iterate open sockets for the requested event and send the same message in each.
-    for (const drogon::WebSocketConnectionPtr &openSocket : *rgOpenSockets)
+    for (const drogon::WebSocketConnectionPtr &openSocket : *prgOpenSockets)
     {
         openSocket->send(strJsonTestData);
     }
