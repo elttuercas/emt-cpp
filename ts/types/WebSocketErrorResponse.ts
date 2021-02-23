@@ -24,11 +24,11 @@ export interface WebSocketErrorResponse
      */
     is_error : true;
     /**
+     * An application-wide unique error identifier.
+     */
+    error_id : string;
+    /**
      * A brief description of the error.
      */
     error : string;
-    /**
-     * Error code. Ideally unique in the whole application, most likely unique per endpoint. We will see.
-     */
-    errno : number;
 }
