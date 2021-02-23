@@ -38,7 +38,8 @@ namespace Log
 
         /**
          * Function called when a new message is received from a client currently connected to the websocket.
-         * This function is unused.
+         * This function is unused as this controller is only meant to track open sockets so messages may
+         * later be sent through them.
          */
         void handleNewMessage(const WebSocketConnectionPtr &,
                                       std::string &&,
@@ -53,6 +54,7 @@ namespace Log
          */
         void handleConnectionClosed(const WebSocketConnectionPtr &) override;
 
+        // TODO: Add logged in filter to path
         WS_PATH_LIST_BEGIN
             WS_PATH_ADD("/log/view/");
         WS_PATH_LIST_END
