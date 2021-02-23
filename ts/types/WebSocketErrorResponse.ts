@@ -10,26 +10,25 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#pragma once
-
-#include <drogon/HttpSimpleController.h>
-
-using namespace drogon;
-
 /**
- * Class LogoutController
+ * Interface WebSocketErrorResponse
  *
- * Handles removal of all session data, thus logging the user out.
+ * Represents an error response emitted by the serverside websocket controllers.
  *
  * @author Carlos Amores
  */
-class LogoutController : public drogon::HttpSimpleController<LogoutController>
+export interface WebSocketErrorResponse
 {
-public:
-    PATH_LIST_BEGIN
-        PATH_ADD("/logout/", HttpMethod::Get, "LoggedInFilter");
-    PATH_LIST_END
-
-    void
-    asyncHandleHttpRequest(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) override;
-};
+    /**
+     * Whether the response is an error response. Since this is an interface, it is a constant true value.
+     */
+    is_error : true;
+    /**
+     * A brief description of the error.
+     */
+    error : string;
+    /**
+     * Error code. Ideally unique in the whole application, most likely unique per endpoint. We will see.
+     */
+    errno : number;
+}

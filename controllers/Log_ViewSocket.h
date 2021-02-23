@@ -18,7 +18,9 @@ using namespace drogon;
 namespace Log
 {
     /**
-     * Class Log::ViewSocket. This class handles websocket connections from the event log view page to update
+     * Class Log::ViewSocket
+     *
+     * This class handles websocket connections from the event log view page to update
      * the attendance table periodically whenever an user joins or leaves the event channel in Discord.
      *
      * @author Carlos Amores

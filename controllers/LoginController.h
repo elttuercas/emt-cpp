@@ -20,7 +20,9 @@
 using namespace drogon;
 
 /**
- * Class LoginController. This class handles user OAuth login with an IPS community.
+ * Class LoginController
+ *
+ * This class handles user OAuth login with an IPS community.
  *
  * @author Carlos Amores
  */

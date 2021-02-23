@@ -17,8 +17,10 @@
 
 using namespace drogon;
 /**
- * Class BroadcastTest. This is a test class to send messages to open websockets
- * associated with events. It does not implement input validation.
+ * Class BroadcastTestController
+ *
+ * This is a test class to send messages to open websockets associated with events. It does not implement input
+ * validation.
  *
  * @author Carlos Amores
  */
