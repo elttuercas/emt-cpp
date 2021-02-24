@@ -113,7 +113,7 @@ void LoginController::get(const HttpRequestPtr &req, std::function<void(const Ht
     for (const unsigned char &i : hash)
     {
         std::stringstream ss;
-        ss << std::hex << (int) i;
+        ss << std::hex << static_cast<int>(i);
         strChallenge += ss.str();
     }
 

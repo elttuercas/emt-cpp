@@ -17,7 +17,9 @@
 using namespace drogon;
 
 /**
- * Class LogoutController. Handles removal of all session data, thus logging the user out.
+ * Class LogoutController
+ *
+ * Handles removal of all session data, thus logging the user out.
  *
  * @author Carlos Amores
  */

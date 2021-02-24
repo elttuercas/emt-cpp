@@ -17,9 +17,10 @@
 using namespace drogon;
 
 /**
- * Class RootController. This class redirects traffic from the default web route / to the default dashboard
- * view. The reason the dashboard view is not located at the web root is because the URL looks like absolute shit
- * when using pagination with the events table.
+ * Class RootController
+ * This class redirects traffic from the default web route / to the default dashboard view. The reason the dashboard
+ * view is not located at the web root is because the URL looks like absolute shit when using pagination with the
+ * events table.
  *
  * https://emt.eltu.engineer/dashboard/1/ <-- Looks good
  * https://emt.eltu.engineer/1/           <-- What the fuck is this?

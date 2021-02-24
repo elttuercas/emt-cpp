@@ -41,8 +41,8 @@ void ViewSocket::handleNewConnection(
         // There is no event ID in the URL so close the socket immediately.
         Json::Value jsonErrMessage;
         jsonErrMessage["is_error"] = true;
+        jsonErrMessage["error_id"] = "Log::ViewSocket/1";
         jsonErrMessage["error"]    = "Invalid event ID";
-        jsonErrMessage["errno"]    = 1;
 
         Json::StreamWriterBuilder builder;
         builder["indentation"] = "";

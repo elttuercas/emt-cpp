@@ -10,28 +10,25 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#pragma once
-
-#include <drogon/HttpSimpleController.h>
-#include "Log_ViewSocket.h"
-
-using namespace drogon;
-
 /**
- * Class BroadcastTestController
+ * Interface WebSocketErrorResponse
  *
- * This is a test class to send messages to open websockets associated with events. It does not implement input
- * validation.
+ * Represents an error response emitted by the serverside websocket controllers.
  *
  * @author Carlos Amores
  */
-class BroadcastTestController : public drogon::HttpSimpleController<BroadcastTestController>
+export interface WebSocketErrorResponse
 {
-public:
-    void
-    asyncHandleHttpRequest(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) override;
-
-    PATH_LIST_BEGIN
-        PATH_ADD("/log/broadcast/", HttpMethod::Get);
-    PATH_LIST_END
-};
+    /**
+     * Whether the response is an error response. Since this is an interface, it is a constant true value.
+     */
+    is_error : true;
+    /**
+     * An application-wide unique error identifier.
+     */
+    error_id : string;
+    /**
+     * A brief description of the error.
+     */
+    error : string;
+}

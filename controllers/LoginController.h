@@ -14,13 +14,15 @@
 
 #include <drogon/HttpController.h>
 #include <drogon/HttpClient.h>
-#include "sodium/randombytes.h"
-#include "openssl/sha.h"
+#include <sodium/randombytes.h>
+#include <openssl/sha.h>
 
 using namespace drogon;
 
 /**
- * Class LoginController. This class handles user OAuth login with an IPS community.
+ * Class LoginController
+ *
+ * This class handles user OAuth login with an IPS community.
  *
  * @author Carlos Amores
  */

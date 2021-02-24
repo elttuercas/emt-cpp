@@ -18,9 +18,10 @@ using namespace drogon;
 namespace Log
 {
     /**
-     * Class Log::CreateController. This class handles displaying the form to create an event log
-     * when accessed with the HTTP GET method and handles the form submission in the same path when the result is
-     * submitted with the HTTP POST method.
+     * Class Log::CreateController
+     *
+     * This class handles displaying the form to create an event log when accessed with the HTTP GET method and
+     * handles the form submission in the same path when the result is submitted with the HTTP POST method.
      *
      * @author Carlos Amores
      */
