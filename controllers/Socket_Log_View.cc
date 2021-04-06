@@ -10,14 +10,36 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include "Log_ViewSocket.h"
+#include "Socket_Log_View.h"
 
-using namespace Log;
+using namespace Socket::Log;
 
-std::map<std::string, std::deque<WebSocketConnectionPtr>>  ViewSocket::s_rgOpenSockets;
-std::map<WebSocketConnectionPtr, std::string>              ViewSocket::s_rgSocketEvent;
+std::map<std::string, std::deque<WebSocketConnectionPtr>>  View::s_rgOpenSockets;
+std::map<WebSocketConnectionPtr, std::string>              View::s_rgSocketEvent;
 
-void ViewSocket::handleNewMessage(
+bool View::broadcast(const std::string &logId, const Json::Value &message)
+{
+    try
+    {
+        std::deque<drogon::WebSocketConnectionPtr> *prgOpenSockets = &s_rgOpenSockets.at(logId);
+        Json::StreamWriterBuilder builder;
+        builder["indentation"] = "";
+
+        const std::string strJsonMessage = Json::writeString(builder, message);
+
+        for (const drogon::WebSocketConnectionPtr &openSocket : *prgOpenSockets)
+        {
+            openSocket->send(strJsonMessage);
+        }
+        return true;
+    }
+    catch (const std::out_of_range &)
+    {
+        return false;
+    }
+}
+
+void View::handleNewMessage(
         const drogon::WebSocketConnectionPtr &wsConnPtr,
         std::string &&message,
         const drogon::WebSocketMessageType &type
@@ -25,7 +47,7 @@ void ViewSocket::handleNewMessage(
 {
 }
 
-void ViewSocket::handleNewConnection(
+void View::handleNewConnection(
         const drogon::HttpRequestPtr &req,
         const drogon::WebSocketConnectionPtr &wsConnPtr
 )
@@ -43,7 +65,7 @@ void ViewSocket::handleNewConnection(
         // There is no event ID in the URL so close the socket immediately.
         Json::Value jsonErrMessage;
         jsonErrMessage["is_error"] = true;
-        jsonErrMessage["error_id"] = "Log::ViewSocket/1";
+        jsonErrMessage["error_id"] = "Socket::Log::View/1";
         jsonErrMessage["error"]    = "Invalid event ID";
 
         Json::StreamWriterBuilder builder;
@@ -60,7 +82,7 @@ void ViewSocket::handleNewConnection(
     s_rgSocketEvent[wsConnPtr] = strEventID;
 }
 
-void ViewSocket::handleConnectionClosed(const drogon::WebSocketConnectionPtr &wsConnPtr)
+void View::handleConnectionClosed(const drogon::WebSocketConnectionPtr &wsConnPtr)
 {
     // Get the event for which the websocket was created.
     std::string strEventID;

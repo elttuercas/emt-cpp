@@ -10,16 +10,16 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include "Log_CreateController.h"
+#include "Controller_Log_Create.h"
 
-using namespace Log;
+using namespace Controller::Log;
 
-void CreateController::get(
+void Create::get(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
 {
-    // Create a CSRF Token for the member each time they visit the page to make it extra secure.
+    // Create a CSRF Token for the member each time they visit the page to make it properly secure.
     std::string strCsrfToken, strCsrfTokenID;
     strCsrfTokenID = drogon::utils::genRandomString(10);
     strCsrfToken   = drogon::utils::getMd5(drogon::utils::genRandomString(50));
@@ -51,7 +51,7 @@ void CreateController::get(
     callback(drogon::HttpResponse::newHttpViewResponse("./views/log/create.csp", data));
 }
 
-void CreateController::post(
+void Create::post(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )

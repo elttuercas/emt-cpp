@@ -10,29 +10,21 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include "BroadcastTestController.h"
+#include "Controller_WebSocketBroadcastTest.h"
 
-void BroadcastTestController::asyncHandleHttpRequest(
+using namespace Controller;
+
+void WebSocketBroadcastTest::asyncHandleHttpRequest(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
 {
     std::string                                strEventID     = req->getParameter("event_id");
-    std::deque<drogon::WebSocketConnectionPtr> *prgOpenSockets = &Log::ViewSocket::s_rgOpenSockets.at(strEventID);
     Json::Value                                jsonTestData;
     jsonTestData["is_error"] = false;
     jsonTestData["message"]  = "Broadcast test";
 
-    Json::StreamWriterBuilder builder;
-    builder["indentation"] = "";
-
-    std::string strJsonTestData = Json::writeString(builder, jsonTestData);
-
-    // Iterate open sockets for the requested event and send the same message in each.
-    for (const drogon::WebSocketConnectionPtr &openSocket : *prgOpenSockets)
-    {
-        openSocket->send(strJsonTestData);
-    }
+    Socket::Log::View::broadcast(strEventID, jsonTestData);
 
     drogon::HttpResponsePtr resp = drogon::HttpResponse::newHttpResponse();
     resp->setContentTypeCode(drogon::ContentType::CT_NONE);

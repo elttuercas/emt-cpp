@@ -10,12 +10,15 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include "RootController.h"
+#include "Api_Log_View.h"
 
-void RootController::asyncHandleHttpRequest(
-        const HttpRequestPtr &req,
-        std::function<void(const HttpResponsePtr &)> &&callback
+using namespace Api::Log;
+
+void View::eventControls(
+        const drogon::HttpRequestPtr &req,
+        std::function<void(const drogon::HttpResponsePtr &)> &&callback,
+        const std::string &logId
 )
 {
-    callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
+
 }

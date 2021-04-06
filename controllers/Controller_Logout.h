@@ -13,25 +13,25 @@
 #pragma once
 
 #include <drogon/HttpSimpleController.h>
-#include "Log_ViewSocket.h"
 
 using namespace drogon;
-
-/**
- * Class BroadcastTestController
- *
- * This is a test class to send messages to open websockets associated with events. It does not implement input
- * validation.
- *
- * @author Carlos Amores
- */
-class BroadcastTestController : public drogon::HttpSimpleController<BroadcastTestController>
+namespace Controller
 {
-public:
-    void
-    asyncHandleHttpRequest(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback) override;
+    /**
+     * Class Controller::Logout
+     *
+     * Handles removal of all session data, thus logging the user out.
+     *
+     * @author Carlos Amores
+     */
+    class Logout : public drogon::HttpSimpleController<Logout>
+    {
+    public:
+        PATH_LIST_BEGIN
+            PATH_ADD("/logout/", HttpMethod::Get, "LoggedInFilter");
+        PATH_LIST_END
 
-    PATH_LIST_BEGIN
-        PATH_ADD("/log/broadcast/", HttpMethod::Get);
-    PATH_LIST_END
-};
+        void asyncHandleHttpRequest(const HttpRequestPtr &req,
+                                            std::function<void(const HttpResponsePtr &)> &&callback) override;
+    };
+}

@@ -10,15 +10,16 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include "LoginController.h"
+#include "Controller_Login.h"
 
-const std::string LoginController::s_strOAuthClientID        = "0312716581837523fb7a3db7d9c324ce";
-const std::string LoginController::s_strOAuthClientSecret    = "";
-const std::string LoginController::s_strRedirectUrl          = "https://emt.eltu.engineer/login/callback/";
-const std::string LoginController::s_strInvisionCommunityUrl = "https://ips.eltu.engineer";
+using namespace Controller;
 
+const std::string Login::s_strOAuthClientID        = "0312716581837523fb7a3db7d9c324ce";
+const std::string Login::s_strOAuthClientSecret    = "";
+const std::string Login::s_strRedirectUrl          = "https://emt.eltu.engineer/login/callback/";
+const std::string Login::s_strInvisionCommunityUrl = "https://ips.eltu.engineer";
 
-void LoginController::handleOAuthCallback(
+void Login::handleOAuthCallback(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
@@ -82,7 +83,10 @@ void LoginController::handleOAuthCallback(
     );
 }
 
-void LoginController::get(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback)
+void Login::get(
+        const drogon::HttpRequestPtr &req,
+        std::function<void(const drogon::HttpResponsePtr &)> &&callback
+        )
 {
     std::string strOAuthState = drogon::utils::genRandomString(128);
     // A new state is generated and used to create the link every time the user visits the page.

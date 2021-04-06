@@ -10,7 +10,9 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include "DashboardController.h"
+#include "Controller_Dashboard.h"
+
+using namespace Controller;
 
 // Leaving this here as a placeholder until I write the code to read from the database.
 std::vector<std::map<std::string, std::string>> rgSampleEvents = {
@@ -24,7 +26,7 @@ std::vector<std::map<std::string, std::string>> rgSampleEvents = {
         }
 };
 
-void DashboardController::get(
+void Dashboard::get(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
@@ -42,7 +44,7 @@ void DashboardController::get(
     callback(drogon::HttpResponse::newHttpViewResponse("./views/dashboard.csp", data));
 }
 
-void DashboardController::getPaginated(
+void Dashboard::getPaginated(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback,
         int page

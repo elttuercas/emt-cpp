@@ -15,22 +15,22 @@
 #include <drogon/HttpController.h>
 
 using namespace drogon;
-namespace Log
+namespace Controller::Log
 {
     /**
-     * Class Log::CreateController
+     * Class Controller::Log::Create
      *
      * This class handles displaying the form to create an event log when accessed with the HTTP GET method and
      * handles the form submission in the same path when the result is submitted with the HTTP POST method.
      *
      * @author Carlos Amores
      */
-    class CreateController : public drogon::HttpController<CreateController>
+    class Create : public drogon::HttpController<Create>
     {
     public:
         METHOD_LIST_BEGIN
-            ADD_METHOD_TO(CreateController::get, "/log/create/", HttpMethod::Get, "LoggedInFilter");
-            ADD_METHOD_TO(CreateController::post, "/log/create/", HttpMethod::Post, "LoggedInFilter");
+            ADD_METHOD_TO(Create::get, "/log/create/", HttpMethod::Get, "LoggedInFilter");
+            ADD_METHOD_TO(Create::post, "/log/create/", HttpMethod::Post, "LoggedInFilter");
         METHOD_LIST_END
 
         /**

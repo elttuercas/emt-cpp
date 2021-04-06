@@ -10,13 +10,14 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-#include "LogoutController.h"
+#include "Controller_Root.h"
 
-void LogoutController::asyncHandleHttpRequest(
+using namespace Controller;
+
+void Root::asyncHandleHttpRequest(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
 {
-    req->session()->clear();
     callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
 }
