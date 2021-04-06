@@ -47,23 +47,5 @@ namespace Controller
          * @param callback
          */
         void get(const HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback);
-
-    private:
-        /**
-         * The client ID assigned to the EMT application by the application we are going to use to log in using OAuth.
-         */
-        static const std::string s_strOAuthClientID;
-        /**
-         * The client secret assigned to the EMT application by the application we are going to use to log in using OAuth.
-         */
-        static const std::string s_strOAuthClientSecret;
-        /**
-         * The URL to which the user will be redirected in our application after accepting to log in.
-         */
-        static const std::string s_strRedirectUrl;
-        /**
-         * The URL where the POST request will be sent to obtain the authorisation token.
-         */
-        static const std::string s_strInvisionCommunityUrl;
     };
 }

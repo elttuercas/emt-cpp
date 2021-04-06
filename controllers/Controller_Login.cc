@@ -14,11 +14,6 @@
 
 using namespace Controller;
 
-const std::string Login::s_strOAuthClientID        = "0312716581837523fb7a3db7d9c324ce";
-const std::string Login::s_strOAuthClientSecret    = "";
-const std::string Login::s_strRedirectUrl          = "https://emt.eltu.engineer/login/callback/";
-const std::string Login::s_strInvisionCommunityUrl = "https://ips.eltu.engineer";
-
 void Login::handleOAuthCallback(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
@@ -50,17 +45,19 @@ void Login::handleOAuthCallback(
     }
     req->session()->erase("oauthState");
 
+    const Json::Value jsonCustomConfig = drogon::app().getCustomConfig();
+
     // Create a POST request to get the OAuth access token from the server.
     drogon::HttpRequestPtr pTokenReq = drogon::HttpRequest::newHttpFormPostRequest();
     pTokenReq->setParameter("grant_type", "authorization_code");
     pTokenReq->setParameter("code", strCode);
-    pTokenReq->setParameter("redirect_uri", s_strRedirectUrl);
-    pTokenReq->setParameter("client_id", s_strOAuthClientID);
-    pTokenReq->setParameter("client_secret", s_strOAuthClientSecret);
+    pTokenReq->setParameter("redirect_uri", jsonCustomConfig["site_url"].asString() + "/login/callback/");
+    pTokenReq->setParameter("client_id", jsonCustomConfig["oauth_client_id"].asString());
+    pTokenReq->setParameter("client_secret", jsonCustomConfig["oauth_client_secret"].asString());
     pTokenReq->setParameter("code_verifier", req->session()->get<std::string>("oauthCodeVerifier"));
     req->session()->erase("oauthCodeVerifier");
 
-    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient(s_strInvisionCommunityUrl);
+    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient(jsonCustomConfig["ips_site_url"].asString());
     pTokenReq->setPath("/oauth/token/");
     reqClient->sendRequest(
             pTokenReq,
@@ -130,10 +127,12 @@ void Login::get(
     // And make the challenge URL safe as well since base64 encoding is not URL safe.
     strChallenge = drogon::utils::urlEncodeComponent(strChallenge);
 
+    const Json::Value jsonCustomConfig = drogon::app().getCustomConfig();
+
     // Start generating the link the user will be taken to when they click on the login button.
-    std::string strOAuthLoginUrl = s_strInvisionCommunityUrl + "/oauth/authorize/";
-    strOAuthLoginUrl += "?response_type=code&client_id=" + s_strOAuthClientID + "&redirect_uri=";
-    strOAuthLoginUrl += drogon::utils::urlEncodeComponent(s_strRedirectUrl);
+    std::string strOAuthLoginUrl = jsonCustomConfig["ips_site_url"].asString() + "/oauth/authorize/";
+    strOAuthLoginUrl += "?response_type=code&client_id=" + jsonCustomConfig["oauth_client_id"].asString() + "&redirect_uri=";
+    strOAuthLoginUrl += drogon::utils::urlEncodeComponent(jsonCustomConfig["site_url"].asString() + "/login/callback/");
     strOAuthLoginUrl += "&scope=emt&state=" + strOAuthState + "&code_challenge=" + strChallenge;
     strOAuthLoginUrl += "&code_challenge_method=S256";
 
