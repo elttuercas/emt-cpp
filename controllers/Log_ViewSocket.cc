@@ -31,9 +31,11 @@ void ViewSocket::handleNewConnection(
 )
 {
     /*
-     * TODO: Validate the event ID received in the request is a currently running valid event.
-     * It must be a running event because otherwise there is no point in opening a websocket for
-     * an event which is not going to receive updates.
+     * TODO: Validate the event ID received in the request is a valid event.
+     * It must be either one of two things:
+     * - A currently running event so updates about members joining/leaving event channels can be sent.
+     * OR
+     * - An event which has not started yet in which case the first update will be the Event start or cancellation.
      */
     std::string strEventID = req->getParameter("event_id");
     if (strEventID.empty())
