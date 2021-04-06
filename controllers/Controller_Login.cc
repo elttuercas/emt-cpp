@@ -86,7 +86,7 @@ void Login::handleOAuthCallback(
 void Login::get(
         const drogon::HttpRequestPtr &req,
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
-        )
+)
 {
     std::string strOAuthState = drogon::utils::genRandomString(128);
     // A new state is generated and used to create the link every time the user visits the page.

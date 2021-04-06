@@ -36,6 +36,7 @@ namespace Api::Log
          * @param callback
          * @param eventId
          */
-        void eventControls(const drogon::HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback, const std::string &logId);
+        void eventControls(const drogon::HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback,
+                           const std::string &logId);
     };
 }

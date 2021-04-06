@@ -19,8 +19,8 @@ void WebSocketBroadcastTest::asyncHandleHttpRequest(
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
 {
-    std::string                                strEventID     = req->getParameter("event_id");
-    Json::Value                                jsonTestData;
+    std::string strEventID = req->getParameter("event_id");
+    Json::Value jsonTestData;
     jsonTestData["is_error"] = false;
     jsonTestData["message"]  = "Broadcast test";
 

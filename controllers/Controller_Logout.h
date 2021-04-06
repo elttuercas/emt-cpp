@@ -32,6 +32,6 @@ namespace Controller
         PATH_LIST_END
 
         void asyncHandleHttpRequest(const HttpRequestPtr &req,
-                                            std::function<void(const HttpResponsePtr &)> &&callback) override;
+                                    std::function<void(const HttpResponsePtr &)> &&callback) override;
     };
 }

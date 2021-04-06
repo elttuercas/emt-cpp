@@ -64,8 +64,8 @@ mix
             ]
         }
     ).sass(
-        './scss/std_table.scss',
-        './css'
+    './scss/std_table.scss',
+    './css'
     )
     .options(
         {
@@ -75,8 +75,8 @@ mix
             ]
         }
     ).sass(
-        './scss/std_form.scss',
-        './css'
+    './scss/std_form.scss',
+    './css'
     )
     .options(
         {

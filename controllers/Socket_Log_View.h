@@ -68,6 +68,6 @@ namespace Socket::Log
          * Stores a map of websocket connection pointers associated with the event ID for which
          * they were opened.
          */
-        static std::map<WebSocketConnectionPtr, std::string> s_rgSocketEvent;
+        static std::map<WebSocketConnectionPtr, std::string>             s_rgSocketEvent;
     };
 }
