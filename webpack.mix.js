@@ -63,9 +63,10 @@ mix
                 tailwindcss
             ]
         }
-    ).sass(
-    './scss/std_table.scss',
-    './css'
+    )
+    .sass(
+        './scss/std_table.scss',
+        './css'
     )
     .options(
         {
@@ -74,9 +75,10 @@ mix
                 tailwindcss
             ]
         }
-    ).sass(
-    './scss/std_form.scss',
-    './css'
+    )
+    .sass(
+        './scss/std_form.scss',
+        './css'
     )
     .options(
         {
