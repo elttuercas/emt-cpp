@@ -131,7 +131,8 @@ void Login::get(
 
     // Start generating the link the user will be taken to when they click on the login button.
     std::string strOAuthLoginUrl = jsonCustomConfig["ips_site_url"].asString() + "/oauth/authorize/";
-    strOAuthLoginUrl += "?response_type=code&client_id=" + jsonCustomConfig["oauth_client_id"].asString() + "&redirect_uri=";
+    strOAuthLoginUrl +=
+            "?response_type=code&client_id=" + jsonCustomConfig["oauth_client_id"].asString() + "&redirect_uri=";
     strOAuthLoginUrl += drogon::utils::urlEncodeComponent(jsonCustomConfig["site_url"].asString() + "/login/callback/");
     strOAuthLoginUrl += "&scope=emt&state=" + strOAuthState + "&code_challenge=" + strChallenge;
     strOAuthLoginUrl += "&code_challenge_method=S256";

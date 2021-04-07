@@ -1,60 +1,55 @@
 {
     //rdbms: server type, postgresql,mysql or sqlite3
-    "rdbms": "postgresql",
-    //host: server address,localhost by default;
-    "host": "127.0.0.1",
-    //port: server port, 5432 by default;
-    "port": 5432,
-    //dbname: Database name;
-    "dbname": "",
-    //schema: valid for postgreSQL, "public" by default;
-    "schema": "public",
-    //user: User name
-    "user": "",
-    //password or passwd: Password
-    "password": "",
+    "rdbms": "sqlite3",
+    //filename: sqlite3 db file name
+    "filename": "../database_example.sqlite",
     //client_encoding: The character set used by drogon_ctl. it is empty string by default which
     //means use the default character set.
     //"client_encoding": "",
     //table: An array of tables to be modelized. if the array is empty, all revealed tables are modelized.
     "tables": [],
     "relationships": {
-        "enabled": false,
+        "enabled": true,
         "items": [
             {
-                "type": "has one",
-                "original_table_name": "products",
-                "original_table_alias": "product",
+                "type": "has many",
+                "original_table_name": "event_logs",
+                "original_table_alias": "log",
                 "original_key": "id",
-                "target_table_name": "skus",
-                "target_table_alias": "SKU",
-                "target_key": "product_id",
-                "enable_reverse": true
+                "target_table_name": "event_actions",
+                "target_table_alias": "action",
+                "target_key": "log_id",
+                "enable_reverse": false
             },
             {
                 "type": "has many",
-                "original_table_name": "products",
-                "original_table_alias": "product",
+                "original_table_name": "event_logs",
+                "original_table_alias": "log",
                 "original_key": "id",
-                "target_table_name": "reviews",
-                "target_table_alias": "",
-                "target_key": "product_id",
-                "enable_reverse": true
+                "target_table_name": "event_attendance",
+                "target_table_alias": "attendance",
+                "target_key": "log_id",
+                "enable_reverse": false
             },
             {
-                "type": "many to many",
-                "original_table_name": "products",
-                "original_table_alias": "",
+                "type": "has many",
+                "original_table_name": "event_logs",
+                "original_table_alias": "log",
                 "original_key": "id",
-                "pivot_table": {
-                    "table_name": "carts_products",
-                    "original_key": "product_id",
-                    "target_key": "cart_id"
-                },
-                "target_table_name": "carts",
-                "target_table_alias": "",
-                "target_key": "id",
-                "enable_reverse": true
+                "target_table_name": "event_awards",
+                "target_table_alias": "award",
+                "target_key": "log_id",
+                "enable_reverse": false
+            },
+            {
+                "type": "has one",
+                "original_table_name": "event_logs",
+                "original_table_alias": "log",
+                "original_key": "id",
+                "target_table_name": "event_discord_map",
+                "target_table_alias": "discord",
+                "target_key": "log_id",
+                "enable_reverse": false
             }
         ]
     },
