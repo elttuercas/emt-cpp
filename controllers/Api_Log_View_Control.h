@@ -13,30 +13,36 @@
 #pragma once
 
 #include <drogon/HttpController.h>
+#include "models/EventLogs.h"
+#include "models/EventActions.h"
 
 using namespace drogon;
-namespace Api::Log
+namespace Api::Log::View
 {
     /**
      * Class Api::Log::View
      *
      * This class handles AJAX operations to control a specific event
      */
-    class View : public drogon::HttpController<View>
+    class Control : public drogon::HttpController<Control>
     {
     public:
+        // TODO: Logged in filter
         METHOD_LIST_BEGIN
-            ADD_METHOD_TO(View::eventControls, "/api/log/{1:logId}/view/");
+            ADD_METHOD_TO(Control::post, "/api/log/{1:logId}/view/control/", HttpMethod::Post);
         METHOD_LIST_END
 
-        /**
-         * Handle the requests sent when an user interacts with an event log's controls.
-         *
-         * @param req
-         * @param callback
-         * @param eventId
-         */
-        void eventControls(const drogon::HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback,
-                           const std::string &logId);
+        enum Actions
+        {
+            STARTED        = 1 << 0,
+            CANCELLED      = 1 << 1,
+            ENDED          = 1 << 2,
+            AWARDS_ISSUED  = 1 << 3,
+            AWARDS_REVOKED = 1 << 4,
+            EVENT_LOCKED   = 1 << 5
+        };
+
+        void post(const drogon::HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback,
+                  const std::string &logId);
     };
 }
