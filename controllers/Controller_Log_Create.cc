@@ -64,7 +64,6 @@ void Create::post(
     std::vector<std::string>                             rgExpectedParams = {
             "event",
             "platform",
-            "discord_channel",
             "rep_rate",
             strTokenID
     };

@@ -51,6 +51,13 @@ namespace Api::Log::View
             EVENT_LOCKED   = 1 << 6
         };
 
+        /**
+         * Handles AJAX POST requests sent to the endpoint to control an Event log.
+         *
+         * @param req
+         * @param callback
+         * @param logId
+         */
         void post(const drogon::HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback,
                   const std::string &logId);
     };
