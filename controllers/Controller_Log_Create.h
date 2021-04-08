@@ -13,6 +13,8 @@
 #pragma once
 
 #include <drogon/HttpController.h>
+#include "models/EventLogs.h"
+#include "models/EventActions.h"
 
 using namespace drogon;
 namespace Controller::Log
@@ -32,6 +34,12 @@ namespace Controller::Log
             ADD_METHOD_TO(Create::get, "/log/create/", HttpMethod::Get, "LoggedInFilter");
             ADD_METHOD_TO(Create::post, "/log/create/", HttpMethod::Post, "LoggedInFilter");
         METHOD_LIST_END
+
+        enum Platform
+        {
+            DISCORD = 1,
+            TWITCH  = 2
+        };
 
         /**
          * Displays the form to create an event log.

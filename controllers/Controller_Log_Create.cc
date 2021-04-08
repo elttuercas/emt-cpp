@@ -58,9 +58,8 @@ void Create::post(
 {
     // Retrieve the form data from the request.
     const std::unordered_map<std::string, std::string> rgPostData = req->getParameters();
+    const auto                                         strTokenID = req->session()->get<std::string>("csrfTokenID");
 
-    const auto                                           strTokenID       = req->session()->get<std::string>(
-            "csrfTokenID");
     // Create a vector with the expected parameters.
     std::vector<std::string>                             rgExpectedParams = {
             "event",
@@ -108,6 +107,35 @@ void Create::post(
         callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
         return;
     }
+
+    drogon::orm::DbClientPtr                                 pDbClient = drogon::app().getDbClient("emt");
+    drogon::orm::Mapper<drogon_model::sqlite3::EventLogs>    mapperEventLogs(pDbClient);
+    drogon::orm::Mapper<drogon_model::sqlite3::EventActions> mapperEventActions(pDbClient);
+
+    // Convert the input data strings to the right types.
+    int iAward, iCalendarEventId, iPlatform;
+    try
+    {
+        iAward           = std::stoi(rgPostData.at("rep_rate"));
+        iCalendarEventId = std::stoi(rgPostData.at("event"));
+        iPlatform        = std::stoi(rgPostData.at("platform"));
+    }
+    catch (const std::invalid_argument &)
+    {
+        req->session()->insert("errors", true);
+        callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
+        return;
+    }
+
+    drogon_model::sqlite3::EventLogs log;
+    log.setAward(iAward);
+    log.setCalendarEventId(iCalendarEventId);
+    log.setPlatform(iPlatform);
+    log.setStatus(0);
+    log.setHost(req->session()->get<int>("memberId"));
+    log.setHash("");
+    log.setRepRate(0.0028);
+
 
     // TODO: Redirect to the log which has just been created.
     callback(drogon::HttpResponse::newRedirectionResponse("/log/view/"));
