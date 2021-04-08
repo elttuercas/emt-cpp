@@ -48,6 +48,8 @@ void Login::handleOAuthCallback(
     const Json::Value jsonCustomConfig = drogon::app().getCustomConfig();
 
     // Create a POST request to get the OAuth access token from the server.
+    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient(jsonCustomConfig["ips_site_url"].asString());
+
     drogon::HttpRequestPtr pTokenReq = drogon::HttpRequest::newHttpFormPostRequest();
     pTokenReq->setParameter("grant_type", "authorization_code");
     pTokenReq->setParameter("code", strCode);
@@ -57,19 +59,47 @@ void Login::handleOAuthCallback(
     pTokenReq->setParameter("code_verifier", req->session()->get<std::string>("oauthCodeVerifier"));
     req->session()->erase("oauthCodeVerifier");
 
-    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient(jsonCustomConfig["ips_site_url"].asString());
     pTokenReq->setPath("/oauth/token/");
     reqClient->sendRequest(
             pTokenReq,
-            [callback, &req](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
+            [callback, &req, &reqClient](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
             {
                 if (result == drogon::ReqResult::Ok)
                 {
-                    req->session()->insert("loggedIn", true);
-                    const std::shared_ptr<Json::Value> jsonRespData = resp->getJsonObject();
-                    // Access token to make API calls.
-                    req->session()->insert("apiAccessToken", (*jsonRespData)["access_token"].asString());
-                    callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
+                    const std::shared_ptr<Json::Value> pJsonRespData     = resp->getJsonObject();
+                    const std::string                  strApiAccessToken = (*pJsonRespData)["access_token"].asString();
+
+                    // With the access token in tow, make another call to the IPS API to obtain member information.
+                    drogon::HttpRequestPtr pMemberReq = drogon::HttpRequest::newHttpRequest();
+                    pMemberReq->addHeader(
+                            "Authorization",
+                            "Bearer " + strApiAccessToken
+                    );
+                    pMemberReq->setPath("/core/me");
+
+                    reqClient->sendRequest(
+                            pMemberReq,
+                            [callback, &req, &strApiAccessToken](
+                                    drogon::ReqResult result,
+                                    const drogon::HttpResponsePtr &resp
+                            )
+                            {
+                                if (result == drogon::ReqResult::Ok)
+                                {
+                                    const std::shared_ptr<Json::Value> pJsonRespData = resp->getJsonObject();
+                                    req->session()->insert("loggedIn", true);
+                                    req->session()->insert("apiAccessToken", strApiAccessToken);
+                                    req->session()->insert("memberId", (*pJsonRespData)["id"].asInt());
+
+                                    callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
+                                }
+                                else
+                                {
+                                    req->session()->insert("errors", true);
+                                    callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+                                }
+                            }
+                    );
                 }
                 else
                 {

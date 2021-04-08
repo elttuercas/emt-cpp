@@ -112,6 +112,11 @@ void Create::post(
     drogon::orm::Mapper<drogon_model::sqlite3::EventLogs>    mapperEventLogs(pDbClient);
     drogon::orm::Mapper<drogon_model::sqlite3::EventActions> mapperEventActions(pDbClient);
 
+    // Get the current unix timestamp.
+    std::chrono::time_point<std::chrono::system_clock> tpNow = std::chrono::system_clock::now();
+
+    long iEpochTimestamp = std::chrono::duration_cast<std::chrono::seconds>(tpNow.time_since_epoch()).count();
+
     // Convert the input data strings to the right types.
     int iAward, iCalendarEventId, iPlatform;
     try
@@ -127,16 +132,46 @@ void Create::post(
         return;
     }
 
+    if (!(iPlatform == Platform::TWITCH || iPlatform == Platform::DISCORD))
+    {
+        drogon::HttpResponsePtr pResp = drogon::HttpResponse::newHttpResponse();
+        pResp->setStatusCode(drogon::k400BadRequest);
+        pResp->setContentTypeCode(drogon::CT_NONE);
+        callback(pResp);
+        return;
+    }
+
     drogon_model::sqlite3::EventLogs log;
     log.setAward(iAward);
     log.setCalendarEventId(iCalendarEventId);
     log.setPlatform(iPlatform);
     log.setStatus(0);
     log.setHost(req->session()->get<int>("memberId"));
-    log.setHash("");
+    log.setHash(
+            drogon::utils::getMd5(std::to_string(iCalendarEventId) + std::to_string(iEpochTimestamp))
+    );
+    // TODO: Non-fixed rate.
     log.setRepRate(0.0028);
+    mapperEventLogs.insert(log);
 
+    drogon_model::sqlite3::EventActions action;
+    action.setLogId(*log.getId());
+    action.setMemberId(req->session()->get<int>("memberId"));
+    action.setTimestamp(iEpochTimestamp);
+    action.setAction(Actions::CREATED);
+    mapperEventActions.insert(action);
 
-    // TODO: Redirect to the log which has just been created.
-    callback(drogon::HttpResponse::newRedirectionResponse("/log/view/"));
+    if (iPlatform == Platform::DISCORD)
+    {
+        drogon::orm::Mapper<drogon_model::sqlite3::EventDiscordMap> mapperEventDiscordMap(pDbClient);
+
+        drogon_model::sqlite3::EventDiscordMap eventDiscordMap;
+        eventDiscordMap.setLogId(*log.getId());
+        // TODO: Get Discord channel from Discord bot.
+        eventDiscordMap.setDiscordChannel("");
+
+        mapperEventDiscordMap.insert(eventDiscordMap);
+    }
+
+    callback(drogon::HttpResponse::newRedirectionResponse("/log/view/" + *log.getHash() + '/'));
 }

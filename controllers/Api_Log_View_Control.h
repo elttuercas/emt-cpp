@@ -22,24 +22,33 @@ namespace Api::Log::View
     /**
      * Class Api::Log::View
      *
-     * This class handles AJAX operations to control a specific event
+     * This class handles AJAX operations to control a specific event log in the EMT.
+     *
+     * @author Carlos Amores
      */
     class Control : public drogon::HttpController<Control>
     {
     public:
         // TODO: Logged in filter
         METHOD_LIST_BEGIN
-            ADD_METHOD_TO(Control::post, "/api/log/{1:logId}/view/control/", HttpMethod::Post);
+            ADD_METHOD_TO(Control::post, "/api/log/view/{1:logId}/control/", HttpMethod::Post);
         METHOD_LIST_END
 
+        /**
+         * Enum Actions
+         *
+         * In this controller the CREATED action is not used given that this controller handles
+         * the event controls once it has been created.
+         */
         enum Actions
         {
-            STARTED        = 1 << 0,
-            CANCELLED      = 1 << 1,
-            ENDED          = 1 << 2,
-            AWARDS_ISSUED  = 1 << 3,
-            AWARDS_REVOKED = 1 << 4,
-            EVENT_LOCKED   = 1 << 5
+            CREATED        = 1 << 0,
+            STARTED        = 1 << 1,
+            CANCELLED      = 1 << 2,
+            ENDED          = 1 << 3,
+            AWARDS_ISSUED  = 1 << 4,
+            AWARDS_REVOKED = 1 << 5,
+            EVENT_LOCKED   = 1 << 6
         };
 
         void post(const drogon::HttpRequestPtr &req, std::function<void(const HttpResponsePtr &)> &&callback,

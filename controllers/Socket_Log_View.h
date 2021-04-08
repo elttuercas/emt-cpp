@@ -29,7 +29,6 @@ namespace Socket::Log
     class View : public drogon::WebSocketController<View>
     {
     public:
-        // TODO: Add logged in filter to path
         WS_PATH_LIST_BEGIN
             WS_PATH_ADD("/log/view/");
         WS_PATH_LIST_END
