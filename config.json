@@ -92,7 +92,10 @@
             "xap",
             "apk",
             "cur",
-            "xml"
+            "xml",
+            "ttf",
+            "woff",
+            "woff2"
         ],
         //locations: An array of locations of static files for GET requests.
         "locations": [
@@ -129,6 +132,15 @@
                 "uri_prefix": "/js",
                 "default_content_type": "text/javascript",
                 "alias": "/home/eltu/dev/emt/emt-cpp/js",
+                "is_case_sensitive": true,
+                "allow_all": false,
+                "is_recursive": true,
+                "filters": []
+            },
+            {
+                "uri_prefix": "/fonts",
+                "default_content_type": "font/woff",
+                "alias": "/home/eltu/dev/emt/emt-cpp/node_modules/@iconsout/unicons/fonts",
                 "is_case_sensitive": true,
                 "allow_all": false,
                 "is_recursive": true,

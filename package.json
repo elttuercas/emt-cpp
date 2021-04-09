@@ -12,6 +12,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@iconscout/unicons": "3.0.6",
         "@tailwindcss/forms": "^0.2.1",
         "@tailwindcss/postcss7-compat": "^2.0.2",
         "@types/jquery": "^3.5.5",

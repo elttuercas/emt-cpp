@@ -53,5 +53,8 @@ WORKDIR /emt/build
 RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-fcoroutines" ..
 RUN make
 
+# Symlink to be able to serve the fonts
+RUN ln -s /emt/node_modules/\@iconsout/unicons/fonts/ /emt/fonts
+
 # Run web application
 CMD ["/emt/build/emt-cpp"]
