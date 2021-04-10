@@ -1,19 +1,18 @@
-<%c++ const auto rgEvents = @@.get<std::vector<std::map<std::string, std::string>>>("events"); %>
-<!DOCTYPE html>
-<!--
-Template data:
-events - std::vector<std::map<std::string, std::string>>
-loggedIn - bool
--->
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/global.css">
-    <title>EMT - Dashboard</title>
-</head>
-<body>
-<!-- Nav menu -->
-<%view ./views/global/nav.csp %>
-</body>
-</html>
+<%layout ./views/global/global.csp %>
+<table>
+    <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Age</th>
+    </tr>
+    <tr>
+        <td>Jill</td>
+        <td>Smith</td>
+        <td>50</td>
+    </tr>
+    <tr>
+        <td>Eve</td>
+        <td>Jackson</td>
+        <td>94</td>
+    </tr>
+</table>

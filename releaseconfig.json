@@ -247,13 +247,22 @@
         "client_max_websocket_message_size": "128K"
     },
     //plugins: Define all plugins running in the application
-    "plugins": [],
+    "plugins": [
+        {
+            "name": "GlobalTmplBootstrap"
+        }
+    ],
     //custom_config: custom configuration for users. This object can be get by the app().getCustomConfig() method.
     "custom_config": {
         "site_url": "https://emt.eltu.engineer",
         "oauth_client_id": "0312716581837523fb7a3db7d9c324ce",
         "oauth_client_secret": "",
         "ips_site_url": "https://ips.eltu.engineer",
-        "logo_url": ""
+        "logo_url": "",
+        "footer_links": {
+            "Column Title": {
+                "Link Name": "Link Address"
+            }
+        }
     }
 }

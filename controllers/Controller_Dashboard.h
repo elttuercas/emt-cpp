@@ -14,6 +14,7 @@
 
 #include <drogon/HttpController.h>
 #include <cmath>
+#include "plugins/GlobalTmplBootstrap.h"
 
 using namespace drogon;
 namespace Controller

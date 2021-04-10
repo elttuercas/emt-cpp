@@ -6,11 +6,11 @@ footerLinks - std::map<std::string, std::map<std::string, std::string>>
 <div class="global_footer_wrapper">
     <footer class="global_footer">
         <div class="global_footer_container">
-            <%c++ for (const std::pair<const std::string, std::map<std::string, std::string>> &column : rgFooterLinks) { %>
+            <%c++ for (const std::pair<const std::string, std::map<std::string, std::string>> &pairColumn : rgFooterLinks) { %>
                 <div class="global_footer_column">
-                    <div class="global_footer_column_title">{%column.first%}</div>
-                    <%c++ for (const std::pair<const std::string, std::string> link : column.second) { %>
-                    <a href="{%link.second%}" class="global_footer_link">{%link.first%}</a>
+                    <div class="global_footer_column_title">{%pairColumn.first%}</div>
+                    <%c++ for (const std::pair<const std::string, std::string> pairLink : pairColumn.second) { %>
+                        <a href="{%pairLink.second%}" class="global_footer_link">{%pairLink.first%}</a>
                     <%c++ } %>
                 </div>
             <%c++ } %>
