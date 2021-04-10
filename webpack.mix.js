@@ -53,8 +53,8 @@ mix
         }
     )
     .sass(
-        './scss/std_nav.scss',
-        './css'
+        './scss/global/nav.scss',
+        './css/global'
     )
     .options(
         {
@@ -65,20 +65,8 @@ mix
         }
     )
     .sass(
-        './scss/std_table.scss',
-        './css'
-    )
-    .options(
-        {
-            processCssUrls: false,
-            postCss: [
-                tailwindcss
-            ]
-        }
-    )
-    .sass(
-        './scss/std_form.scss',
-        './css'
+        './scss/global/footer.scss',
+        './css/global'
     )
     .options(
         {
@@ -93,9 +81,8 @@ mix
 mix.styles(
     [
         './css/global.css',
-        './css/std_nav.css',
-        './css/std_table.css',
-        './css/std_form.css'
+        './css/global/nav.css',
+        './css/global/footer.css'
     ],
     './css/global.css'
 );

@@ -1,0 +1,36 @@
+<%c++ const auto bLoggedIn = @@.get<bool>("loggedIn"); %>
+<!--
+Template data:
+loggedIn - bool
+logoUrl - std::string
+-->
+<aside class="global_nav">
+    <div class="global_nav_logo">
+        <a href="/" class="global_nav_logo_link">
+            <img src="[[logoUrl]]" alt="EMT Logo" class="global_nav_logo_img">
+        </a>
+    </div>
+    <ul>
+        <li class="global_nav_destination">
+            <a href="/dashboard/" title="Dashboard">
+                <i class="uil uil-clipboard-blank global_nav_destination_icon"></i>
+            </a>
+        </li>
+        <li class="global_nav_destination">
+            <a href="/log/create/" title="Create Event Log">
+                <i class="uil uil-plus global_nav_destination_icon"></i>
+            </a>
+        </li>
+    </ul>
+    <div class="global_nav_log">
+        <%c++ if (bLoggedIn) { %>
+            <a href="/logout/" title="Logout" class="global_nav_log_link_logout">
+                <i class="uil uil-signout"></i>
+            </a>
+        <%c++ } else { %>
+            <a href="/login/" title="Login" class="global_nav_log_link_login">
+                <i class="uil uil-signin"></i>
+            </a>
+        <%c++ } %>
+    </div>
+</aside>

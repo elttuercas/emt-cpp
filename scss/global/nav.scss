@@ -1,0 +1,66 @@
+/*
+ * __/\\\\\\\\\\\\\\\__/\\\\____________/\\\\__/\\\\\\\\\\\\\\\_
+ *  _\/\\\///////////__\/\\\\\\________/\\\\\\_\///////\\\/////__
+ *   _\/\\\_____________\/\\\//\\\____/\\\//\\\_______\/\\\_______
+ *    _\/\\\\\\\\\\\_____\/\\\\///\\\/\\\/_\/\\\_______\/\\\_______
+ *     _\/\\\///////______\/\\\__\///\\\/___\/\\\_______\/\\\_______
+ *      _\/\\\_____________\/\\\____\///_____\/\\\_______\/\\\_______
+ *       _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_______
+ *        _\/\\\\\\\\\\\\\\\_\/\\\_____________\/\\\_______\/\\\_______
+ *         _\///////////////__\///______________\///________\///________
+ */
+
+aside {
+    &.global_nav {
+        @apply flex flex-col items-center bg-gray-800 text-gray-400 shadow h-full;
+
+        div {
+            &.global_nav_logo {
+                @apply h-16 flex items-center w-full;
+
+                a {
+                    &.global_nav_logo_link {
+                        @apply h-10 w-10 mx-auto;
+
+                        img {
+                            &.global_nav_logo_img {
+                                @apply h-10 w-10 mx-auto;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.global_nav_log {
+                @apply mt-auto h-16 flex items-center w-full;
+
+                a {
+                    @apply h-16 w-10 mx-auto flex justify-center items-center w-full text-3xl;
+
+                    &.global_nav_log_link_logout {
+                        @apply hover:bg-red-300 hover:text-white text-red-500;
+                    }
+
+
+                    &.global_nav_log_link_login {
+                        @apply hover:bg-green-300 hover:text-white text-green-500;
+                    }
+                }
+            }
+        }
+
+        ul {
+            li {
+                &.global_nav_destination {
+                    @apply hover:bg-blue-500 hover:text-white;
+                }
+
+                i {
+                    &.global_nav_destination_icon {
+                        @apply h-16 flex justify-center items-center w-full text-3xl px-4;
+                    }
+                }
+            }
+        }
+    }
+}

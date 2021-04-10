@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<!--
+Template data:
+loggedIn - bool
+pageTitle - std::string
+logoUrl - std::string
+footerLinks - std::map<std::string, std::map<std::string, std::string>>
+-->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="/js/global.js"></script>
+    <title>[[pageTitle]]</title>
+</head>
+<body>
+<div class="global_container">
+    <%view ./views/global/nav.csp %>
+    <div class="global_content">
+    [[]]
+    </div>
+</div>
+<%view ./views/global/footer.csp %>
+</body>
+</html>

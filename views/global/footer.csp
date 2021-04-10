@@ -1,0 +1,29 @@
+<%c++ const auto rgFooterLinks = @@.get<std::map<std::string, std::map<std::string, std::string>>>("footerLinks"); %>
+<!--
+Template data:
+footerLinks - std::map<std::string, std::map<std::string, std::string>>
+-->
+<div class="global_footer_wrapper">
+    <footer class="global_footer">
+        <div class="global_footer_container">
+            <%c++ for (const std::pair<const std::string, std::map<std::string, std::string>> &column : rgFooterLinks) { %>
+                <div class="global_footer_column">
+                    <div class="global_footer_column_title">{%column.first%}</div>
+                    <%c++ for (const std::pair<const std::string, std::string> link : column.second) { %>
+                    <a href="{%link.second%}" class="global_footer_link">{%link.first%}</a>
+                    <%c++ } %>
+                </div>
+            <%c++ } %>
+        </div>
+        <div class="global_footer_bottom">
+            <div class="global_footer_bottom_container">
+                <div class="global_footer_bottom_message">Eltu's Event Management Tool</div>
+                <div class="global_footer_bottom_icons">
+                    <a href="https://github.com/elttuercas/emt-cpp" class="global_footer_bottom_link">
+                        <i class="uil uil-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

@@ -1,0 +1,68 @@
+/*
+ * __/\\\\\\\\\\\\\\\__/\\\\____________/\\\\__/\\\\\\\\\\\\\\\_
+ *  _\/\\\///////////__\/\\\\\\________/\\\\\\_\///////\\\/////__
+ *   _\/\\\_____________\/\\\//\\\____/\\\//\\\_______\/\\\_______
+ *    _\/\\\\\\\\\\\_____\/\\\\///\\\/\\\/_\/\\\_______\/\\\_______
+ *     _\/\\\///////______\/\\\__\///\\\/___\/\\\_______\/\\\_______
+ *      _\/\\\_____________\/\\\____\///_____\/\\\_______\/\\\_______
+ *       _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_______
+ *        _\/\\\\\\\\\\\\\\\_\/\\\_____________\/\\\_______\/\\\_______
+ *         _\///////////////__\///______________\///________\///________
+ */
+
+footer {
+    &.global_footer {
+        @apply bg-gray-800 pt-10 w-full;
+
+        div {
+            &.global_footer_container {
+                @apply max-w-6xl m-auto flex flex-wrap justify-start;
+
+                div {
+                    &.global_footer_column {
+                        @apply p-5 w-1/2 sm:w-4/12 md:w-3/12;
+
+                        div {
+                            &.global_footer_column_title {
+                                @apply text-xs uppercase text-gray-400 font-medium mb-6;
+                            }
+                        }
+
+                        a {
+                            &.global_footer_link {
+                                @apply my-3 block text-gray-300 hover:text-gray-100 text-sm font-medium duration-700;
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.global_footer_bottom {
+                @apply pt-2;
+
+                div {
+                    &.global_footer_bottom_container {
+                        @apply flex flex-col pt-5 pb-5 px-3 m-auto border-t border-gray-500 text-gray-400 text-sm;
+                        @apply md:flex-row max-w-6xl;
+
+                        div {
+                            &.global_footer_bottom_message {
+                                @apply mt-2;
+                            }
+
+                            &.global_footer_bottom_icons {
+                                @apply flex flex-row md:flex-auto md:flex-row-reverse mt-2;
+
+                                a {
+                                    &.global_footer_bottom_link {
+                                        @apply w-6 mx-1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

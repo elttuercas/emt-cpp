@@ -13,13 +13,20 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-
-body {
-    @apply bg-gray-500 antialiased font-sans;
-}
+@import "~@iconscout/unicons/css/line.css";
 
 div {
-    &.std_container {
-        @apply container mx-auto px-4 sm:px-8;
+    &.global_container {
+        @apply flex h-screen;
+
+        div {
+            &.global_content {
+                @apply block;
+            }
+        }
+    }
+
+    &.global_footer_wrapper {
+        @apply flex flex-col justify-between items-center;
     }
 }

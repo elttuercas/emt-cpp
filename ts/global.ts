@@ -10,6 +10,17 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-// Nope, this doesn't work to load lodash into _ in the window. Shoot me
-(<any>window)._ = require('lodash');
-(<any>window).$ = require('jquery');
+import * as $ from 'jquery';
+import * as _ from 'lodash';
+
+(<any>window).$ = $;
+(<any>window)._ = _;
+
+/**
+ * Register an event listener in global scope to mark the appropriate nav bar link as the page being currently
+ * viewed.
+ */
+$(function ()
+{
+    let navLinks : JQuery = $();
+});

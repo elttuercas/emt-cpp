@@ -140,7 +140,7 @@
             {
                 "uri_prefix": "/fonts",
                 "default_content_type": "font/woff",
-                "alias": "/home/eltu/dev/emt/emt-cpp/node_modules/@iconsout/unicons/fonts",
+                "alias": "/home/eltu/dev/emt/emt-cpp/node_modules/@iconscout/unicons/fonts",
                 "is_case_sensitive": true,
                 "allow_all": false,
                 "is_recursive": true,
@@ -242,6 +242,7 @@
         "site_url": "localhost",
         "oauth_client_id": "0312716581837523fb7a3db7d9c324ce",
         "oauth_client_secret": "",
-        "ips_site_url": "https://ips.eltu.engineer"
+        "ips_site_url": "https://ips.eltu.engineer",
+        "logo_url": ""
     }
 }

@@ -71,8 +71,11 @@ void Dashboard::getPaginated(
         return;
     }
 
-    std::vector<decltype(rgSampleEvents)::value_type>(rgSampleEvents.begin() + iEventsToSlice,
-                                                      rgSampleEvents.end()).swap(rgSampleEvents);
+    std::vector<decltype(rgSampleEvents)::value_type>(
+            rgSampleEvents.begin() + iEventsToSlice,
+            rgSampleEvents.end()
+    )
+            .swap(rgSampleEvents);
 
     // From this point forth, the process is the same as when displaying the first 25 events by default.
     if (rgSampleEvents.size() > 25)
