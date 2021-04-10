@@ -55,6 +55,10 @@ aside {
                     @apply hover:bg-blue-500 hover:text-white;
                 }
 
+                &.global_nav_destination_active {
+                    @apply bg-gray-600;
+                }
+
                 i {
                     &.global_nav_destination_icon {
                         @apply h-16 flex justify-center items-center w-full text-3xl px-4;

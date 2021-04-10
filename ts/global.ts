@@ -22,5 +22,13 @@ import * as _ from 'lodash';
  */
 $(function ()
 {
-    let navLinks : JQuery = $();
+    let navLinks : JQuery = $('li.global_nav_destination a');
+    _.each(navLinks, function (navLink : HTMLElement)
+    {
+        let $navLink : JQuery = $(navLink);
+        if (window.location.pathname === $navLink.attr('href'))
+        {
+            $navLink.parent('li').addClass('global_nav_destination_active');
+        }
+    });
 });
