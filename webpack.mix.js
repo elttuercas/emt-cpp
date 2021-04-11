@@ -75,6 +75,18 @@ mix
                 tailwindcss
             ]
         }
+    )
+    .sass(
+        './scss/global/error.scss',
+        './css/global'
+    )
+    .options(
+        {
+            processCssUrls: false,
+            postCss: [
+                tailwindcss
+            ]
+        }
     );
 
 // Concatenate all CSS assets together.
@@ -82,7 +94,8 @@ mix.styles(
     [
         './css/global.css',
         './css/global/nav.css',
-        './css/global/footer.css'
+        './css/global/footer.css',
+        './css/global/error.css'
     ],
     './css/global.css'
 );

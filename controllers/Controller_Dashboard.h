@@ -15,6 +15,7 @@
 #include <drogon/HttpController.h>
 #include <cmath>
 #include "plugins/GlobalTmplBootstrap.h"
+#include "models/EventLogs.h"
 
 using namespace drogon;
 namespace Controller

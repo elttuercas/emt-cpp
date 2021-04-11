@@ -42,8 +42,8 @@ void Create::get(
 
     drogon::HttpViewData data;
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
-    data.insert("csrfTokenID", strCsrfTokenID);
-    data.insert("csrfToken", strCsrfToken);
+    data.insert("csrfTokenID", std::move(strCsrfTokenID));
+    data.insert("csrfToken", std::move(strCsrfToken));
     // Insert whether there were errors in the request and remove the key so it defaults back to false.
     data.insert("errors", req->session()->get<bool>("errors"));
     req->session()->erase("errors");

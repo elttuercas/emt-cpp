@@ -21,8 +21,11 @@ void Dashboard::get(
 {
     auto                 *pTmplBootstrap = drogon::app().getPlugin<GlobalTmplBootstrap>();
     drogon::HttpViewData data;
-
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
+
+    drogon::orm::DbClientPtr pDbClient = drogon::app().getDbClient("emt");
+    drogon::orm::Mapper<drogon_model::sqlite3::EventLogs> mapperEventLogs(pDbClient);
+
     callback(pTmplBootstrap->newHttpViewResponse("./views/dashboard.csp", "EMT - Dashboard", data));
 }
 

@@ -178,7 +178,7 @@ void Login::get(
 
     drogon::HttpViewData data;
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
-    data.insert("oauthLoginUrl", strOAuthLoginUrl);
+    data.insert("oauthLoginUrl", std::move(strOAuthLoginUrl));
     data.insert("errors", req->session()->get<bool>("errors"));
     req->session()->erase("errors");
 

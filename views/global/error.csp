@@ -1,1 +1,18 @@
+<%layout ./views/global/global.csp %>
+<%c++ const auto rgLines = @@.get<std::vector<std::string>>("lines"); %>
+<%c++ const auto iLineStart = @@.get<int>("lineStart"); %>
+<!--
+Template data:
+lines - std::vector<std::string>
+lineStart - int
+-->
+<div class="">
 
+</div>
+<pre>
+    <ol start="{%iLineStart%}" class="global_error_code_block">
+        <%c++ for (const std::string &strLine : rgLines) { %>
+            <li>{%strLine%}</li>
+        <%c++ } %>
+    </ol>
+</pre>
