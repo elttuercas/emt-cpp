@@ -22,7 +22,7 @@ bool View::broadcast(const std::string &logId, const Json::Value &message)
     try
     {
         std::deque<drogon::WebSocketConnectionPtr> *prgOpenSockets = &s_rgOpenSockets.at(logId);
-        static Json::StreamWriterBuilder           builder;
+        Json::StreamWriterBuilder                  builder;
         builder["indentation"] = "";
 
         const std::string strJsonMessage = Json::writeString(builder, message);
