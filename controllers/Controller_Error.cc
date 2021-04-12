@@ -71,7 +71,7 @@ void Error::asyncHandleHttpRequest(
     data.insert("fileName", strErrorFile);
     data.insert("errorLine", iErrorLine);
     data.insert("githubFileUrl", strErrorGithubUrl);
-    data.insert("details",rgErrorDetails);
+    data.insert("details", rgErrorDetails);
 
     drogon::HttpResponsePtr pResp = pTmplBootstrap->newHttpViewResponse(
             "./views/global/error.csp",

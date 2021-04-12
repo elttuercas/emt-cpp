@@ -44,9 +44,6 @@ void Create::get(
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
     data.insert("csrfTokenID", std::move(strCsrfTokenID));
     data.insert("csrfToken", std::move(strCsrfToken));
-    // Insert whether there were errors in the request and remove the key so it defaults back to false.
-    data.insert("errors", req->session()->get<bool>("errors"));
-    req->session()->erase("errors");
 
     callback(drogon::HttpResponse::newHttpViewResponse("./views/log/create.csp", data));
 }
@@ -80,8 +77,27 @@ void Create::post(
          * std::vector<std::string>::max_size so this catch block should redirect the user back to the
          * log creation form with an error message.
          */
-        req->session()->insert("errors", true);
-        callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
+        req->session()->insert("errorFile", std::string(__FILE__));
+        req->session()->insert("errorLine", 71);
+        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
+        req->session()->insert(
+                "errorGithubUrl",
+                std::move(
+                        std::string(
+                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Log_Create.cc#L71"
+                        )
+                )
+        );
+        req->session()->insert(
+                "errorDetails",
+                std::move(
+                        std::map<std::string, std::string> {
+                                {"POST Data Size",     std::to_string(rgPostData.size())},
+                                {"POST Data Max Size", std::to_string(rgInputParams.max_size())}
+                        }
+                )
+        );
+        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
         return;
     }
     for (const std::pair<const std::string, std::string> &postDatum : rgPostData)
@@ -94,16 +110,54 @@ void Create::post(
     std::sort(rgExpectedParams.begin(), rgExpectedParams.end());
     if (rgInputParams != rgExpectedParams)
     {
-        req->session()->insert("errors", true);
-        callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
+        req->session()->insert("errorFile", std::string(__FILE__));
+        req->session()->insert("errorLine", 111);
+        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
+        req->session()->insert(
+                "errorGithubUrl",
+                std::move(
+                        std::string(
+                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Log_Create.cc#L111"
+                        )
+                )
+        );
+        req->session()->insert(
+                "errorDetails",
+                std::move(
+                        std::map<std::string, std::string> {
+                                {"Received POST arguments", std::to_string(rgInputParams.size())},
+                                {"Expected POST arguments", std::to_string(rgExpectedParams.size())}
+                        }
+                )
+        );
+        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
         return;
     }
 
     // Ensure that the CSRF token in the form matches the token in the user's session.
     if (rgPostData.at(strTokenID) != req->session()->get<std::string>("csrfToken"))
     {
-        req->session()->insert("errors", true);
-        callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
+        req->session()->insert("errorFile", std::string(__FILE__));
+        req->session()->insert("errorLine", 138);
+        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
+        req->session()->insert(
+                "errorGithubUrl",
+                std::move(
+                        std::string(
+                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Log_Create.cc#L138"
+                        )
+                )
+        );
+        req->session()->insert(
+                "errorDetails",
+                std::move(
+                        std::map<std::string, std::string> {
+                                {"Expected CSRF token value", req->session()->get<std::string>("crsfToken")},
+                                {"Received CSRF token value", rgPostData.at(strTokenID)}
+                        }
+                )
+        );
+        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
         return;
     }
 
@@ -126,8 +180,28 @@ void Create::post(
     }
     catch (const std::invalid_argument &)
     {
-        req->session()->insert("errors", true);
-        callback(drogon::HttpResponse::newRedirectionResponse("/log/create/"));
+        req->session()->insert("errorFile", std::string(__FILE__));
+        req->session()->insert("errorLine", 175);
+        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
+        req->session()->insert(
+                "errorGithubUrl",
+                std::move(
+                        std::string(
+                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Log_Create.cc#L175"
+                        )
+                )
+        );
+        req->session()->insert(
+                "errorDetails",
+                std::move(
+                        std::map<std::string, std::string> {
+                                {"REP Rate", rgPostData.at("rep_rate")},
+                                {"Event ID", rgPostData.at("event")},
+                                {"Platform", rgPostData.at("platform")}
+                        }
+                )
+        );
+        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
         return;
     }
 
