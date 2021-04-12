@@ -32,17 +32,19 @@ drogon::HttpResponsePtr GlobalTmplBootstrap::newHttpViewResponse(
     const Json::Value                                         jsonConfig = drogon::app().getCustomConfig();
     std::map<std::string, std::map<std::string, std::string>> rgFooterLinks;
 
-    for (const std::string &strColumnTitle: jsonConfig["footer_links"].getMemberNames())
+    for (const std::string &strColumnTitle : jsonConfig["footer_links"].getMemberNames())
     {
         for (const std::string &strLinkName : jsonConfig["footer_links"][strColumnTitle].getMemberNames())
         {
-            rgFooterLinks[strColumnTitle][strLinkName] = jsonConfig["footer_links"][strColumnTitle][strLinkName].asString();
+            rgFooterLinks[strColumnTitle][strLinkName] = std::move(
+                    jsonConfig["footer_links"][strColumnTitle][strLinkName].asString()
+            );
         }
     }
 
     data.insert("pageTitle", viewTitle);
-    data.insert("logoUrl", jsonConfig["logo_url"].asString());
-    data.insert("footerLinks", rgFooterLinks);
+    data.insert("logoUrl", std::move(jsonConfig["logo_url"].asString()));
+    data.insert("footerLinks", std::move(rgFooterLinks));
 
     return drogon::HttpResponse::newHttpViewResponse(viewName, data);
 }

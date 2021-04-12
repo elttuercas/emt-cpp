@@ -19,12 +19,12 @@ void Error::asyncHandleHttpRequest(
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
 {
-    /*const auto               strErrorFile       = req->session()->get<std::string>("errorFile");
-    const auto               iErrorLine         = req->session()->get<int>("errorLine");
-    const auto               httpStatusCode     = req->session()->get<drogon::HttpStatusCode>("httpErrorCode");*/
-    std::string            strErrorFile   = "/home/eltu/dev/emt/emt-cpp/controllers/Controller_Error.cc";
-    int                    iErrorLine     = 26;
-    drogon::HttpStatusCode httpStatusCode = drogon::HttpStatusCode::k200OK;
+    const auto strErrorFile   = req->session()->get<std::string>("errorFile");
+    const auto iErrorLine     = req->session()->get<int>("errorLine");
+    const auto httpStatusCode = req->session()->get<drogon::HttpStatusCode>("httpErrorCode");
+    req->session()->erase("errorFile");
+    req->session()->erase("errorLine");
+    req->session()->erase("httpErrorCode");
 
     if (strErrorFile.empty() || iErrorLine == 0)
     {
