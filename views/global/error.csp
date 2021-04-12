@@ -1,18 +1,34 @@
 <%layout ./views/global/global.csp %>
 <%c++ const auto rgLines = @@.get<std::vector<std::string>>("lines"); %>
-<%c++ const auto iLineStart = @@.get<int>("lineStart"); %>
+<%c++ auto iLineStart = @@.get<int>("lineStart"); %>
+<%c++ const auto iErrorLine = @@.get<int>("errorLine"); %>
 <!--
 Template data:
 lines - std::vector<std::string>
 lineStart - int
+errorLine - int
+fileName - std::string
 -->
-<div class="">
-
+<div class="px-4 pb-4 bg-gray-700">
+<p class="p-2 text-gray-300">[[fileName]]</p>
+    <div class="bg-gray-600 text-gray-100 px-12 rounded-xl py-4">
+        <pre>
+            <ol start="{%iLineStart%}" class="global_error_code_block">
+                <%c++ for (const std::string &strLine : rgLines) { %>
+                    <%c++ if (iLineStart == iErrorLine) { %>
+                        <li class="global_error_line">{%strLine%}</li>
+                    <%c++ } else if (iLineStart == iErrorLine - 1 || iLineStart == iErrorLine + 1) { %>
+                        <li class="global_error_line_around">{%strLine%}</li>
+                    <%c++ } else { %>
+                        <li>{%strLine%}</li>
+                    <%c++ } %>
+                    <%c++ ++iLineStart; %>
+                <%c++ } %>
+            </ol>
+        </pre>
+    </div>
+    <p class="p-2 text-gray-300 text-center">
+        An error has occurred with the code above.
+        Help fix my shitty code <a href="" class="border-dotted border-b">here</a>
+    </p>
 </div>
-<pre>
-    <ol start="{%iLineStart%}" class="global_error_code_block">
-        <%c++ for (const std::string &strLine : rgLines) { %>
-            <li>{%strLine%}</li>
-        <%c++ } %>
-    </ol>
-</pre>

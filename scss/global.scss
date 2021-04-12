@@ -15,13 +15,18 @@
 @import "tailwindcss/utilities";
 @import "~@iconscout/unicons/css/line.css";
 
+body {
+    @apply bg-gray-300;
+}
+
 div {
     &.global_container {
-        @apply flex h-screen;
+        @apply min-h-screen;
 
         div {
             &.global_content {
                 @apply block;
+                margin-left: 62px;
             }
         }
     }

@@ -21,6 +21,14 @@ pre {
 
             li {
                 @apply text-sm;
+
+                &.global_error_line {
+                    background: rgba(255, 100, 100, .17);
+                }
+
+                &.global_error_line_around {
+                    background: rgba(255, 100, 100, .07);
+                }
             }
         }
     }

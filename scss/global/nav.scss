@@ -12,7 +12,8 @@
 
 aside {
     &.global_nav {
-        @apply flex flex-col items-center bg-gray-800 text-gray-400 shadow h-full;
+        @apply flex flex-col items-center bg-gray-800 text-gray-400 shadow min-h-screen fixed;
+        height: inherit;
 
         div {
             &.global_nav_logo {
