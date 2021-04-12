@@ -2,16 +2,19 @@
 <%c++ const auto rgLines = @@.get<std::vector<std::string>>("lines"); %>
 <%c++ auto iLineStart = @@.get<int>("lineStart"); %>
 <%c++ const auto iErrorLine = @@.get<int>("errorLine"); %>
+<%c++ const auto rgDetails = @@.get<std::map<std::string, std::string>>("details"); %>
 <!--
 Template data:
 lines - std::vector<std::string>
 lineStart - int
 errorLine - int
 fileName - std::string
+githubFileUrl - std::string
+details - std::map<std::string, std::string>
 -->
-<div class="px-4 pb-4 bg-gray-700">
-<p class="p-2 text-gray-300">[[fileName]]</p>
-    <div class="bg-gray-600 text-gray-100 px-12 rounded-xl py-4">
+<div class="global_error_container">
+    <p class="global_error_filename">[[fileName]]</p>
+    <div class="global_error_code_container">
         <pre>
             <ol start="{%iLineStart%}" class="global_error_code_block">
                 <%c++ for (const std::string &strLine : rgLines) { %>
@@ -27,8 +30,19 @@ fileName - std::string
             </ol>
         </pre>
     </div>
-    <p class="p-2 text-gray-300 text-center">
+    <p class="global_error_github_begging">
         An error has occurred with the code above.
-        Help fix my shitty code <a href="" class="border-dotted border-b">here</a>
+        Help fix my shitty code <a href="[[githubFileUrl]]" class="global_error_github_link">here</a>
     </p>
+    <h2 class="global_error_details_header">Details:</h2>
+    <table class="global_error_details_table">
+        <tbody>
+            <%c++ for (const std::pair<const std::string, std::string> &pairDetails : rgDetails) { %>
+                <tr>
+                    <td class="global_error_details_table_first">{%pairDetails.first%}</td>
+                    <td class="global_error_details_table_second">{%pairDetails.second%}</td>
+                </tr>
+            <%c++ } %>
+        </tbody>
+    </table>
 </div>

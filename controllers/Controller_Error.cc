@@ -19,18 +19,11 @@ void Error::asyncHandleHttpRequest(
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
 {
-    /*const auto strErrorFile   = req->session()->get<std::string>("errorFile");
+    const auto strErrorFile   = req->session()->get<std::string>("errorFile");
     const auto iErrorLine     = req->session()->get<int>("errorLine");
     const auto httpStatusCode = req->session()->get<drogon::HttpStatusCode>("httpErrorCode");
-    const auto strErrorGithubUrl = req->session()->get<std::string>("errorGithubUrl");*/
-
-    const std::string            strErrorFile   = "/home/eltu/dev/emt/emt-cpp/controllers/Controller_Error.cc";
-    const int                    iErrorLine     = 27;
-    const drogon::HttpStatusCode httpStatusCode = drogon::HttpStatusCode::k200OK;
-
-    req->session()->erase("errorFile");
-    req->session()->erase("errorLine");
-    req->session()->erase("httpErrorCode");
+    const auto strErrorGithubUrl = req->session()->get<std::string>("errorGithubUrl");
+    const auto rgErrorDetails = req->session()->get<std::map<std::string, std::string>>("errorDetails");
 
     if (strErrorFile.empty() || iErrorLine == 0)
     {
@@ -38,6 +31,12 @@ void Error::asyncHandleHttpRequest(
         callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
         return;
     }
+
+    req->session()->erase("errorFile");
+    req->session()->erase("errorLine");
+    req->session()->erase("httpErrorCode");
+    req->session()->erase("errorGithubUrl");
+    req->session()->erase("errorDetails");
 
     auto                     *pTmplBootstrap    = drogon::app().getPlugin<GlobalTmplBootstrap>();
     std::ifstream            is(strErrorFile);
@@ -71,6 +70,8 @@ void Error::asyncHandleHttpRequest(
     data.insert("lineStart", iMinLine);
     data.insert("fileName", strErrorFile);
     data.insert("errorLine", iErrorLine);
+    data.insert("githubFileUrl", strErrorGithubUrl);
+    data.insert("details",rgErrorDetails);
 
     drogon::HttpResponsePtr pResp = pTmplBootstrap->newHttpViewResponse(
             "./views/global/error.csp",

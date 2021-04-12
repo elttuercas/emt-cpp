@@ -10,24 +10,75 @@
  *         _\///////////////__\///______________\///________\///________
  */
 
-pre {
-    // Whitespace is a bitch because of the pre element used to wrap the code.
-    font-size: 0;
+div {
+    &.global_error_container {
+        @apply px-12;
 
-    ol {
-        &.global_error_code_block {
-            font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
-            @apply list-decimal;
+        p {
+            &.global_error_filename {
+                @apply p-2 text-gray-300;
+            }
 
-            li {
-                @apply text-sm;
+            &.global_error_github_begging {
+                @apply p-2 text-gray-300 text-center;
 
-                &.global_error_line {
-                    background: rgba(255, 100, 100, .17);
+                a {
+                    &.global_error_github_link {
+                        @apply border-dotted border-b;
+                    }
                 }
+            }
+        }
 
-                &.global_error_line_around {
-                    background: rgba(255, 100, 100, .07);
+        div {
+            &.global_error_code_container {
+                @apply bg-gray-600 text-gray-100 px-12 rounded-xl py-4;
+
+                pre {
+                    // Whitespace is a bitch because of the pre element used to wrap the code.
+                    font-size: 0;
+
+                    ol {
+                        &.global_error_code_block {
+                            font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
+                            @apply list-decimal;
+
+                            li {
+                                @apply text-sm;
+
+                                &.global_error_line {
+                                    background: rgba(255, 100, 100, .17);
+                                }
+
+                                &.global_error_line_around {
+                                    background: rgba(255, 100, 100, .07);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        h2 {
+            &.global_error_details_header {
+                @apply text-gray-400 border-b pb-3;
+            }
+        }
+
+        table {
+            &.global_error_details_table {
+                @apply text-gray-300 w-full mt-2;
+
+                td {
+                    &.global_error_details_table_first {
+                        min-width: 130px;
+                        @apply w-1/5 overflow-hidden font-bold;
+                    }
+
+                    &.global_error_details_table_second {
+                        @apply w-4/5 break-words;
+                    }
                 }
             }
         }
