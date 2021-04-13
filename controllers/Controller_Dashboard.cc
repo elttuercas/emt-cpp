@@ -23,8 +23,41 @@ void Dashboard::get(
     drogon::HttpViewData data;
     data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
 
-    drogon::orm::DbClientPtr pDbClient = drogon::app().getDbClient("emt");
+    drogon::orm::DbClientPtr                              pDbClient = drogon::app().getDbClient("emt");
     drogon::orm::Mapper<drogon_model::sqlite3::EventLogs> mapperEventLogs(pDbClient);
+
+    try
+    {
+        std::vector<drogon_model::sqlite3::EventLogs> eventLogs = mapperEventLogs
+                .orderBy(drogon_model::sqlite3::EventLogs::Cols::_id, drogon::orm::SortOrder::DESC)
+                .limit(25)
+                .offset(0)
+                .findAll();
+    }
+    catch (const drogon::orm::SqlError &sqlError)
+    {
+        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
+        req->session()->insert("errorLine", 31);
+        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k500InternalServerError);
+        req->session()->insert(
+                "errorGithubUrl",
+                std::move(
+                        std::string(
+                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controllerr_Dashboard.cc#L31"
+                        )
+                )
+        );
+        req->session()->insert(
+                "errorDetails",
+                std::move(
+                        std::map<std::string, std::string> {
+                                {"SQL Query", sqlError.query()},
+                                {"SQL Error", std::move(std::string(sqlError.what()))}
+                        }
+                )
+        );
+        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
+    }
 
     callback(pTmplBootstrap->newHttpViewResponse("./views/dashboard.csp", "EMT - Dashboard", data));
 }

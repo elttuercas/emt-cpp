@@ -77,7 +77,7 @@ void Create::post(
          * std::vector<std::string>::max_size so this catch block should redirect the user back to the
          * log creation form with an error message.
          */
-        req->session()->insert("errorFile", std::string(__FILE__));
+        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
         req->session()->insert("errorLine", 71);
         req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
         req->session()->insert(
@@ -110,7 +110,7 @@ void Create::post(
     std::sort(rgExpectedParams.begin(), rgExpectedParams.end());
     if (rgInputParams != rgExpectedParams)
     {
-        req->session()->insert("errorFile", std::string(__FILE__));
+        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
         req->session()->insert("errorLine", 111);
         req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
         req->session()->insert(
@@ -137,7 +137,7 @@ void Create::post(
     // Ensure that the CSRF token in the form matches the token in the user's session.
     if (rgPostData.at(strTokenID) != req->session()->get<std::string>("csrfToken"))
     {
-        req->session()->insert("errorFile", std::string(__FILE__));
+        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
         req->session()->insert("errorLine", 138);
         req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
         req->session()->insert(
@@ -180,7 +180,7 @@ void Create::post(
     }
     catch (const std::invalid_argument &)
     {
-        req->session()->insert("errorFile", std::string(__FILE__));
+        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
         req->session()->insert("errorLine", 175);
         req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
         req->session()->insert(

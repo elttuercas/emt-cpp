@@ -30,17 +30,46 @@ void Login::handleOAuthCallback(
     }
     catch (const std::out_of_range &)
     {
-        // Either the code or state are not set so redirect to login page.
-        req->session()->insert("errors", true);
-        callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+        // Either the code or state are not set so redirect to error page.
+        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
+        req->session()->insert("errorLine", 28);
+        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
+        req->session()->insert(
+                "errorGithubUrl",
+                std::move(
+                        std::string(
+                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L28"
+                        )
+                )
+        );
+        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
         return;
     }
 
     // Compare the received code with the code stored in the user's session.
     if (strState != req->session()->get<std::string>("oauthState"))
     {
-        req->session()->insert("errors", true);
-        callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
+        req->session()->insert("errorLine", 50);
+        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
+        req->session()->insert(
+                "errorGithubUrl",
+                std::move(
+                        std::string(
+                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L50"
+                        )
+                )
+        );
+        req->session()->insert(
+                "errorDetails",
+                std::move(
+                        std::map<std::string, std::string> {
+                                {"Received State", std::move(strState)},
+                                {"Expected State", std::move(req->session()->get<std::string>("oauthState"))}
+                        }
+                )
+        );
+        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
         return;
     }
     req->session()->erase("oauthState");
@@ -95,16 +124,56 @@ void Login::handleOAuthCallback(
                                 }
                                 else
                                 {
-                                    req->session()->insert("errors", true);
-                                    callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+                                    req->session()->insert("errorFile", std::move(std::string(__FILE__)));
+                                    req->session()->insert("errorLine", 109);
+                                    req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k500InternalServerError);
+                                    req->session()->insert(
+                                            "errorGithubUrl",
+                                            std::move(
+                                                    std::string(
+                                                            "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L109"
+                                                    )
+                                            )
+                                    );
+                                    req->session()->insert(
+                                            "errorDetails",
+                                            std::move(
+                                                    std::map<std::string, std::string> {
+                                                            {"HTTP Response Code", std::move(std::to_string(resp->statusCode()))},
+                                                            {"HTTP Response Text", std::move(std::string(resp->getBody()))},
+                                                            {"HTTP Content Type",  std::move(std::to_string(resp->contentType()))}
+                                                    }
+                                            )
+                                    );
+                                    callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
                                 }
                             }
                     );
                 }
                 else
                 {
-                    req->session()->insert("errors", true);
-                    callback(drogon::HttpResponse::newRedirectionResponse("/login/"));
+                    req->session()->insert("errorFile", std::move(std::string(__FILE__)));
+                    req->session()->insert("errorLine", 92);
+                    req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k500InternalServerError);
+                    req->session()->insert(
+                            "errorGithubUrl",
+                            std::move(
+                                    std::string(
+                                            "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L92"
+                                    )
+                            )
+                    );
+                    req->session()->insert(
+                            "errorDetails",
+                            std::move(
+                                    std::map<std::string, std::string> {
+                                            {"HTTP Response Code", std::move(std::to_string(resp->statusCode()))},
+                                            {"HTTP Response Text", std::move(std::string(resp->getBody()))},
+                                            {"HTTP Content Type",  std::move(std::to_string(resp->contentType()))}
+                                    }
+                            )
+                    );
+                    callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
                 }
             }
     );
@@ -176,11 +245,5 @@ void Login::get(
             }
     );
 
-    drogon::HttpViewData data;
-    data.insert("loggedIn", req->session()->get<bool>("loggedIn"));
-    data.insert("oauthLoginUrl", std::move(strOAuthLoginUrl));
-    data.insert("errors", req->session()->get<bool>("errors"));
-    req->session()->erase("errors");
-
-    callback(drogon::HttpResponse::newHttpViewResponse("./views/login.csp", data));
+    callback(drogon::HttpResponse::newRedirectionResponse(strOAuthLoginUrl));
 }

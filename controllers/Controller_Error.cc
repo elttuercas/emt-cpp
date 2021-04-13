@@ -19,11 +19,11 @@ void Error::asyncHandleHttpRequest(
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
 {
-    const auto strErrorFile   = req->session()->get<std::string>("errorFile");
-    const auto iErrorLine     = req->session()->get<int>("errorLine");
-    const auto httpStatusCode = req->session()->get<drogon::HttpStatusCode>("httpErrorCode");
+    const auto strErrorFile      = req->session()->get<std::string>("errorFile");
+    const auto iErrorLine        = req->session()->get<int>("errorLine");
+    const auto httpStatusCode    = req->session()->get<drogon::HttpStatusCode>("httpErrorCode");
     const auto strErrorGithubUrl = req->session()->get<std::string>("errorGithubUrl");
-    const auto rgErrorDetails = req->session()->get<std::map<std::string, std::string>>("errorDetails");
+    const auto rgErrorDetails    = req->session()->get<std::map<std::string, std::string>>("errorDetails");
 
     if (strErrorFile.empty() || iErrorLine == 0)
     {
