@@ -5,7 +5,6 @@ Template data:
 loggedIn - bool
 csrfTokenID - std::string
 csrfToken - std::string
-errors - bool
 -->
 <div class="std_container">
     <div class="std_form_container">
