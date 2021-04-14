@@ -1,18 +1,31 @@
 <%layout ./views/global/global.csp %>
+<%inc #include "models/EventLogs.h" %>
+<%c++ const auto rgEventLogs = @@.get<std::vector<drogon_model::sqlite3::EventLogs>>("eventLogs"); %>
+<!--
+Template data:
+eventLogs - std::vector<drogon_model::sqlite3::EventLogs>
+-->
 <table>
-    <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Age</th>
-    </tr>
-    <tr>
-        <td>Jill</td>
-        <td>Smith</td>
-        <td>50</td>
-    </tr>
-    <tr>
-        <td>Eve</td>
-        <td>Jackson</td>
-        <td>94</td>
-    </tr>
+    <thead>
+        <tr>
+            <th>Host</th>
+            <th>Event Name</th>
+            <th>Platform</th>
+            <th>REP Rate</th>
+            <th>Start Time</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%c++ for (const drogon_model::sqlite3::EventLogs &log : rgEventLogs) { %>
+        <tr>
+            <td>{%*log.getHost()%}</td>
+            <td>{%*log.getCalendarEventId()%}</td>
+            <td>{%*log.getPlatform()%}</td>
+            <td>{%*log.getRepRate()%}</td>
+            <td>"Start Time"</td>
+            <td>"EMT Log Link"</td>
+        </tr>
+        <%c++ } %>
+    </tbody>
 </table>

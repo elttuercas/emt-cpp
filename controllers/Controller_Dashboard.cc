@@ -33,6 +33,8 @@ void Dashboard::get(
                 .limit(25)
                 .offset(0)
                 .findAll();
+        data.insert("eventLogs", std::move(eventLogs));
+        callback(pTmplBootstrap->newHttpViewResponse("./views/dashboard.csp", "EMT - Dashboard", data));
     }
     catch (const drogon::orm::SqlError &sqlError)
     {
@@ -43,7 +45,7 @@ void Dashboard::get(
                 "errorGithubUrl",
                 std::move(
                         std::string(
-                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controllerr_Dashboard.cc#L31"
+                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Dashboard.cc#L31"
                         )
                 )
         );
@@ -58,8 +60,6 @@ void Dashboard::get(
         );
         callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
     }
-
-    callback(pTmplBootstrap->newHttpViewResponse("./views/dashboard.csp", "EMT - Dashboard", data));
 }
 
 void Dashboard::getPaginated(

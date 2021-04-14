@@ -45,7 +45,8 @@ void Create::get(
     data.insert("csrfTokenID", std::move(strCsrfTokenID));
     data.insert("csrfToken", std::move(strCsrfToken));
 
-    callback(drogon::HttpResponse::newHttpViewResponse("./views/log/create.csp", data));
+    auto *pTmplBootstrap = drogon::app().getPlugin<GlobalTmplBootstrap>();
+    callback(pTmplBootstrap->newHttpViewResponse("./views/log/create.csp", "EMT - Create Event Log", data));
 }
 
 void Create::post(

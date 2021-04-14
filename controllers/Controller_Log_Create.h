@@ -16,6 +16,7 @@
 #include "models/EventLogs.h"
 #include "models/EventActions.h"
 #include "models/EventDiscordMap.h"
+#include "plugins/GlobalTmplBootstrap.h"
 
 using namespace drogon;
 namespace Controller::Log

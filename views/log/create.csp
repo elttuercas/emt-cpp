@@ -1,4 +1,4 @@
-<%c++ bool bErrors = @@.get<bool>("errors"); %>
+<%layout ./views/global/global.csp %>
 <!DOCTYPE html>
 <!--
 Template data:
@@ -7,16 +7,6 @@ csrfTokenID - std::string
 csrfToken - std::string
 errors - bool
 -->
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/global.css">
-    <title>EMT - Create Event Log</title>
-</head>
-<body>
-<!-- Nav menu -->
-<%view ./views/navheader.csp %>
 <div class="std_container">
     <div class="std_form_container">
         <div class="std_form_header_container">
@@ -29,11 +19,6 @@ errors - bool
             </div>
         </div>
         <div class="std_form_inputs_container">
-            <%c++ if (bErrors) { %>
-                <div class="std_form_error_display">
-                    <p>Something went wrong, please try again</p>
-                </div>
-            <%c++ } %>
             <form action="/log/create/" method="post">
                 <input type="hidden" name="[[csrfTokenID]]" value="[[csrfToken]]">
                 <div class="std_form_inputs_wrapper">
@@ -83,5 +68,3 @@ errors - bool
         </div>
     </div>
 </div>
-</body>
-</html>
