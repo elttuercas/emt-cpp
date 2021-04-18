@@ -36,7 +36,7 @@ aside {
                 @apply mt-auto h-16 flex items-center w-full;
 
                 a {
-                    @apply h-16 w-10 mx-auto flex justify-center items-center w-full text-3xl;
+                    @apply h-16 mx-auto flex justify-center items-center w-full text-3xl;
 
                     &.global_nav_log_link_logout {
                         @apply hover:bg-red-300 hover:text-white text-red-500;
