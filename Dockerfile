@@ -4,7 +4,7 @@ FROM docker.io/eltuercas/drogon
 WORKDIR /emt
 
 # TODO: Remove test database
-COPY ./database_example.sqlite
+COPY ./database_example.sqlite /emt/database_example.sqlite
 
 # Copy licence
 COPY ./LICENSE /emt/LICENSE
