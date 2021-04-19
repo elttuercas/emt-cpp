@@ -3,6 +3,9 @@ FROM docker.io/eltuercas/drogon
 # Create application directory
 WORKDIR /emt
 
+# TODO: Remove test database
+COPY ./database_example.sqlite
+
 # Copy licence
 COPY ./LICENSE /emt/LICENSE
 
