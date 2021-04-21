@@ -41,8 +41,8 @@ mix.webpackConfig(
 
 mix
     .sass(
-        './scss/global.scss',
-        './css'
+        'scss/global.scss',
+        'css'
     )
     .options(
         {
@@ -53,8 +53,8 @@ mix
         }
     )
     .sass(
-        './scss/global/nav.scss',
-        './css/global'
+        'scss/global/nav.scss',
+        'css/global'
     )
     .options(
         {
@@ -65,8 +65,8 @@ mix
         }
     )
     .sass(
-        './scss/global/footer.scss',
-        './css/global'
+        'scss/global/footer.scss',
+        'css/global'
     )
     .options(
         {
@@ -77,8 +77,8 @@ mix
         }
     )
     .sass(
-        './scss/global/error.scss',
-        './css/global'
+        'scss/global/error.scss',
+        'css/global'
     )
     .options(
         {
@@ -92,13 +92,13 @@ mix
 // Concatenate all CSS assets together.
 mix.styles(
     [
-        './css/global.css',
-        './css/global/nav.css',
-        './css/global/footer.css',
-        './css/global/error.css'
+        'css/global.css',
+        'css/global/nav.css',
+        'css/global/footer.css',
+        'css/global/error.css'
     ],
-    './css/global.css'
+    'css/global.css'
 );
 
 // Typescript compilation.
-mix.js('./ts/global.ts', './js/global.js');
+mix.js('ts/global.ts', 'js/global.js');
