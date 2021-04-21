@@ -97,7 +97,7 @@ mix.styles(
         'css/global/footer.css',
         'css/global/error.css'
     ],
-    'css/global.css'
+    'css/style.css'
 );
 
 // Typescript compilation.
