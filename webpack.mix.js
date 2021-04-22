@@ -89,16 +89,5 @@ mix
         }
     );
 
-// Concatenate all CSS assets together.
-mix.styles(
-    [
-        'css/global.css',
-        'css/global/nav.css',
-        'css/global/footer.css',
-        'css/global/error.css'
-    ],
-    'css/style.css'
-);
-
 // Typescript compilation.
 mix.js('ts/global.ts', 'js/global.js');

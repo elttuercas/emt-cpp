@@ -10,7 +10,10 @@ footerLinks - std::map<std::string, std::map<std::string, std::string>>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/global/error.css">
+    <link rel="stylesheet" href="/css/global/footer.css">
+    <link rel="stylesheet" href="/css/global/nav.css">
     <script src="/js/global.js"></script>
     <title>[[pageTitle]]</title>
 </head>
