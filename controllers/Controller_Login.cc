@@ -19,164 +19,142 @@ void Login::handleOAuthCallback(
         std::function<void(const drogon::HttpResponsePtr &)> &&callback
 )
 {
-    std::string strCode, strState;
-
-    // Get the callback params from the URI.
     try
     {
-        const std::unordered_map<std::string, std::string> rgRequestParameters = req->getParameters();
-        strCode  = rgRequestParameters.at("code");
-        strState = rgRequestParameters.at("state");
-    }
-    catch (const std::out_of_range &)
-    {
-        // Either the code or state are not set so redirect to error page.
-        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
-        req->session()->insert("errorLine", 28);
-        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
-        req->session()->insert(
-                "errorGithubUrl",
-                std::move(
-                        std::string(
-                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L28"
-                        )
-                )
-        );
-        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
-        return;
-    }
+        std::string strCode, strState;
 
-    // Compare the received code with the code stored in the user's session.
-    if (strState != req->session()->get<std::string>("oauthState"))
-    {
-        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
-        req->session()->insert("errorLine", 50);
-        req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k400BadRequest);
-        req->session()->insert(
-                "errorGithubUrl",
-                std::move(
-                        std::string(
-                                "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L50"
-                        )
-                )
-        );
-        req->session()->insert(
-                "errorDetails",
-                std::move(
-                        std::map<std::string, std::string> {
-                                {"Received State", std::move(strState)},
-                                {"Expected State", std::move(req->session()->get<std::string>("oauthState"))}
-                        }
-                )
-        );
-        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
-        return;
-    }
-    req->session()->erase("oauthState");
+        // Get the callback params from the URI.
+        try
+        {
+            const std::unordered_map<std::string, std::string> rgRequestParameters = req->getParameters();
+            strCode  = rgRequestParameters.at("code");
+            strState = rgRequestParameters.at("state");
+        }
+        catch (const std::out_of_range &)
+        {
+            throw RedirectException(
+                    30,
+                    drogon::HttpStatusCode::k500InternalServerError
+            );
+        }
 
-    const Json::Value jsonCustomConfig = drogon::app().getCustomConfig();
-
-    // Create a POST request to get the OAuth access token from the server.
-    drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient(jsonCustomConfig["ips_site_url"].asString());
-
-    drogon::HttpRequestPtr pTokenReq = drogon::HttpRequest::newHttpFormPostRequest();
-    pTokenReq->setParameter("grant_type", "authorization_code");
-    pTokenReq->setParameter("code", strCode);
-    pTokenReq->setParameter("redirect_uri", jsonCustomConfig["site_url"].asString() + "/login/callback/");
-    pTokenReq->setParameter("client_id", jsonCustomConfig["oauth_client_id"].asString());
-    pTokenReq->setParameter("client_secret", jsonCustomConfig["oauth_client_secret"].asString());
-    pTokenReq->setParameter("code_verifier", req->session()->get<std::string>("oauthCodeVerifier"));
-    req->session()->erase("oauthCodeVerifier");
-
-    pTokenReq->setPath("/oauth/token/");
-    reqClient->sendRequest(
-            pTokenReq,
-            [callback, &req, &reqClient](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
-            {
-                if (result == drogon::ReqResult::Ok)
-                {
-                    const std::shared_ptr<Json::Value> pJsonRespData     = resp->getJsonObject();
-                    const std::string                  strApiAccessToken = (*pJsonRespData)["access_token"].asString();
-
-                    // With the access token in tow, make another call to the IPS API to obtain member information.
-                    drogon::HttpRequestPtr pMemberReq = drogon::HttpRequest::newHttpRequest();
-                    pMemberReq->addHeader(
-                            "Authorization",
-                            "Bearer " + strApiAccessToken
-                    );
-                    pMemberReq->setPath("/core/me");
-
-                    reqClient->sendRequest(
-                            pMemberReq,
-                            [callback, &req, &strApiAccessToken](
-                                    drogon::ReqResult result,
-                                    const drogon::HttpResponsePtr &resp
-                            )
-                            {
-                                if (result == drogon::ReqResult::Ok)
-                                {
-                                    const std::shared_ptr<Json::Value> pJsonRespData = resp->getJsonObject();
-                                    req->session()->insert("loggedIn", true);
-                                    req->session()->insert("apiAccessToken", strApiAccessToken);
-                                    req->session()->insert("memberId", (*pJsonRespData)["id"].asInt());
-
-                                    callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
-                                }
-                                else
-                                {
-                                    req->session()->insert("errorFile", std::move(std::string(__FILE__)));
-                                    req->session()->insert("errorLine", 109);
-                                    req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k500InternalServerError);
-                                    req->session()->insert(
-                                            "errorGithubUrl",
-                                            std::move(
-                                                    std::string(
-                                                            "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L109"
-                                                    )
-                                            )
-                                    );
-                                    req->session()->insert(
-                                            "errorDetails",
-                                            std::move(
-                                                    std::map<std::string, std::string> {
-                                                            {"HTTP Response Code", std::move(std::to_string(resp->statusCode()))},
-                                                            {"HTTP Response Text", std::move(std::string(resp->getBody()))},
-                                                            {"HTTP Content Type",  std::move(std::to_string(resp->contentType()))}
-                                                    }
-                                            )
-                                    );
-                                    callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
-                                }
+        // Compare the received code with the code stored in the user's session.
+        if (strState != req->session()->get<std::string>("oauthState"))
+        {
+            throw RedirectException(
+                    42,
+                    drogon::HttpStatusCode::k500InternalServerError,
+                    std::move(
+                            std::map<std::string, std::string> {
+                                    {"Received State", std::move(strState)},
+                                    {"Expected State", std::move(req->session()->get<std::string>("oauthState"))}
                             }
-                    );
-                }
-                else
+                    )
+            );
+        }
+        req->session()->erase("oauthState");
+
+        const Json::Value jsonCustomConfig = drogon::app().getCustomConfig();
+
+        // Create a POST request to get the OAuth access token from the server.
+        drogon::HttpClientPtr reqClient = drogon::HttpClient::newHttpClient(
+                jsonCustomConfig["ips_site_url"].asString());
+
+        drogon::HttpRequestPtr pTokenReq = drogon::HttpRequest::newHttpFormPostRequest();
+        pTokenReq->setParameter("grant_type", "authorization_code");
+        pTokenReq->setParameter("code", strCode);
+        pTokenReq->setParameter("redirect_uri", jsonCustomConfig["site_url"].asString() + "/login/callback/");
+        pTokenReq->setParameter("client_id", jsonCustomConfig["oauth_client_id"].asString());
+        pTokenReq->setParameter("client_secret", jsonCustomConfig["oauth_client_secret"].asString());
+        pTokenReq->setParameter("code_verifier", req->session()->get<std::string>("oauthCodeVerifier"));
+        req->session()->erase("oauthCodeVerifier");
+
+        pTokenReq->setPath("/oauth/token/");
+        reqClient->sendRequest(
+                pTokenReq,
+                [callback, &req, &reqClient](drogon::ReqResult result, const drogon::HttpResponsePtr &resp)
                 {
-                    req->session()->insert("errorFile", std::move(std::string(__FILE__)));
-                    req->session()->insert("errorLine", 92);
-                    req->session()->insert("httpErrorCode", drogon::HttpStatusCode::k500InternalServerError);
-                    req->session()->insert(
-                            "errorGithubUrl",
-                            std::move(
-                                    std::string(
-                                            "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L92"
-                                    )
-                            )
-                    );
-                    req->session()->insert(
-                            "errorDetails",
-                            std::move(
-                                    std::map<std::string, std::string> {
-                                            {"HTTP Response Code", std::move(std::to_string(resp->statusCode()))},
-                                            {"HTTP Response Text", std::move(std::string(resp->getBody()))},
-                                            {"HTTP Content Type",  std::move(std::to_string(resp->contentType()))}
+                    if (result == drogon::ReqResult::Ok)
+                    {
+                        const std::shared_ptr<Json::Value> pJsonRespData     = resp->getJsonObject();
+                        const std::string                  strApiAccessToken = (*pJsonRespData)["access_token"].asString();
+
+                        // With the access token in tow, make another call to the IPS API to obtain member information.
+                        drogon::HttpRequestPtr pMemberReq = drogon::HttpRequest::newHttpRequest();
+                        pMemberReq->addHeader(
+                                "Authorization",
+                                "Bearer " + strApiAccessToken
+                        );
+                        pMemberReq->setPath("/core/me");
+
+                        reqClient->sendRequest(
+                                pMemberReq,
+                                [callback, &req, &strApiAccessToken](
+                                        drogon::ReqResult result,
+                                        const drogon::HttpResponsePtr &resp
+                                )
+                                {
+                                    if (result == drogon::ReqResult::Ok)
+                                    {
+                                        const std::shared_ptr<Json::Value> pJsonRespData = resp->getJsonObject();
+                                        req->session()->insert("loggedIn", true);
+                                        req->session()->insert("apiAccessToken", strApiAccessToken);
+                                        req->session()->insert("memberId", (*pJsonRespData)["id"].asInt());
+
+                                        callback(drogon::HttpResponse::newRedirectionResponse("/dashboard/"));
                                     }
-                            )
-                    );
-                    callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
+                                    else
+                                    {
+                                        throw RedirectException(
+                                                90,
+                                                drogon::HttpStatusCode::k500InternalServerError,
+                                                std::move(
+                                                        std::map<std::string, std::string> {
+                                                                {"HTTP Response Code", std::move(
+                                                                        std::to_string(resp->statusCode()))},
+                                                                {"HTTP Response Text", std::move(
+                                                                        std::string(resp->getBody()))},
+                                                                {"HTTP Content Type",  std::move(
+                                                                        std::to_string(resp->contentType()))}
+                                                        }
+                                                )
+                                        );
+                                    }
+                                }
+                        );
+                    }
+                    else
+                    {
+                        throw RedirectException(
+                                73,
+                                drogon::HttpStatusCode::k500InternalServerError,
+                                std::move(
+                                        std::map<std::string, std::string> {
+                                                {"HTTP Response Code", std::move(std::to_string(resp->statusCode()))},
+                                                {"HTTP Response Text", std::move(std::string(resp->getBody()))},
+                                                {"HTTP Content Type",  std::move(std::to_string(resp->contentType()))}
+                                        }
+                                )
+                        );
+                    }
                 }
-            }
-    );
+        );
+    }
+    catch (RedirectException &e)
+    {
+        req->session()->insert("errorFile", std::move(std::string(__FILE__)));
+        req->session()->insert("errorLine", e.getErrorLine());
+        req->session()->insert("httpErrorCode", e.getHttpStatusCode());
+        req->session()->insert(
+                "errorGithubUrl",
+                std::move(
+                        "https://github.com/elttuercas/emt-cpp/tree/master/controllers/Controller_Login.cc#L" +
+                        std::to_string(e.getErrorLine())
+                )
+        );
+        req->session()->insert("errorDetails", std::move(e.getErrorDetails()));
+        callback(drogon::HttpResponse::newRedirectionResponse("/error/"));
+    }
 }
 
 void Login::get(

@@ -16,6 +16,7 @@
 #include <drogon/HttpClient.h>
 #include <sodium/randombytes.h>
 #include <openssl/sha.h>
+#include "exceptions/RedirectException.h"
 
 using namespace drogon;
 namespace Controller
